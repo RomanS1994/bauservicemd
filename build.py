@@ -97,6 +97,15 @@ COPY['en'].update({
 })
 
 
+for lang, values in {
+    'uk': ('Галерея', 'Відкрити фото', 'Закрити', 'Попереднє фото', 'Наступне фото', 'Перегляньте фото інтер’єрів та деталей оздоблення. Натисніть на фото, щоб збільшити.'),
+    'de': ('Galerie', 'Foto öffnen', 'Schließen', 'Vorheriges Foto', 'Nächstes Foto', 'Entdecken Sie Innenräume und Details der Ausführung. Klicken Sie auf ein Foto, um es zu vergrößern.'),
+    'en': ('Gallery', 'Open photo', 'Close', 'Previous photo', 'Next photo', 'Explore interiors and finishing details. Select a photo to enlarge it.'),
+}.items():
+    for key, value in zip(('projects_page_title', 'example_link', 'gallery_close', 'gallery_prev', 'gallery_next', 'work_intro'), values):
+        COPY[lang][key] = value
+
+
 # Presentation copy uses unpunctuated labels and short editorial blurbs.
 # Keep natural paragraph punctuation and the supplied legal policy unchanged.
 def presentation_label(value):
@@ -200,7 +209,10 @@ def projects_grid(c, expanded=False):
     cards = [('room', c['example_title'], ''), ('detail', c['example_detail'], ''), ('hero', c['example_wide'], 'project-card-wide')]
     if not expanded:
         cards = cards[:2]
-    return '<div class="project-grid">'+''.join(f'''<article class="project-card {cls}"><a href="project-example.html" aria-label="{text(c['example_link'])}: {text(title)}">{image(filename,c['illustration'])}</a><div class="project-copy"><h3>{text(title)}</h3>{link('project-example.html',c['example_link'])}</div></article>''' for filename,title,cls in cards)+'</div>'
+    return '<div class="project-grid">'+''.join(f'''<article class="project-card {cls}"><a href="../assets/images/{filename}.webp" data-gallery-image data-caption="{text(title)}" aria-label="{text(c['example_link'])}: {text(title)}">{image(filename,title)}</a><div class="project-copy"><h3>{text(title)}</h3><a class="text-link" href="../assets/images/{filename}.webp" data-gallery-image data-caption="{text(title)}">{text(c['example_link'])}{arrow()}</a></div></article>''' for filename,title,cls in cards)+'</div>'
+
+def gallery_dialog(c):
+    return f'''<dialog class="gallery-dialog" aria-label="{text(c['projects_page_title'])}" data-gallery-dialog><div class="gallery-toolbar"><p data-gallery-counter aria-live="polite"></p><button type="button" class="gallery-control" data-gallery-close>{text(c['gallery_close'])}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div><figure><img data-gallery-photo alt=""><figcaption data-gallery-caption></figcaption></figure><div class="gallery-navigation"><button type="button" class="gallery-control" data-gallery-prev aria-label="{text(c['gallery_prev'])}">{arrow('gallery-arrow-prev')}</button><button type="button" class="gallery-control" data-gallery-next aria-label="{text(c['gallery_next'])}">{arrow('gallery-arrow-next')}</button></div></dialog>'''
 
 def projects_section(c):
     return f'''<section class="section projects-section" aria-labelledby="projects-heading"><div class="container"><div class="section-top"><div>{label('02',c['work_label'],c.get('section_numbers', True))}<h2 id="projects-heading">{text(c['work_title'])}</h2></div>{link('projects.html',c['all_work'])}</div><p class="section-intro">{text(c['work_intro'])}</p>{projects_grid(c,True)}</div></section>'''
@@ -253,7 +265,7 @@ def document(lang, slug):
     body,title,description=page(lang,slug,c)
     alternates=''.join(f'<link rel="alternate" hreflang="{l}" href="{BASE}/{l}/{slug}">' for l in COPY)
     return f'''<!doctype html>
-<html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>{text(title_plain(title))} | BauServiceMD</title><meta name="description" content="{text(description)}"><link rel="canonical" href="{BASE}/{lang}/{slug}">{alternates}<link rel="alternate" hreflang="x-default" href="{BASE}/uk/{slug}"><meta property="og:type" content="website"><meta property="og:site_name" content="BauServiceMD"><meta property="og:title" content="{text(title_plain(title))} | BauServiceMD"><meta property="og:description" content="{text(description)}"><meta property="og:url" content="{BASE}/{lang}/{slug}"><meta property="og:image" content="{BASE}/assets/images/hero.webp"><link rel="icon" href="../assets/images/favicon.png" type="image/png"><link rel="stylesheet" href="../assets/css/base.css"><link rel="stylesheet" href="../assets/css/layout.css"><link rel="stylesheet" href="../assets/css/components.css"><link rel="stylesheet" href="../assets/css/pages.css"><link rel="stylesheet" href="../assets/css/motion.css"><script src="../assets/js/main.js" defer></script><script src="../assets/js/motion.js" defer></script></head><body>{header(lang,slug,c)}<main id="main">{body}</main>{footer(c)}</body></html>
+<html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>{text(title_plain(title))} | BauServiceMD</title><meta name="description" content="{text(description)}"><link rel="canonical" href="{BASE}/{lang}/{slug}">{alternates}<link rel="alternate" hreflang="x-default" href="{BASE}/uk/{slug}"><meta property="og:type" content="website"><meta property="og:site_name" content="BauServiceMD"><meta property="og:title" content="{text(title_plain(title))} | BauServiceMD"><meta property="og:description" content="{text(description)}"><meta property="og:url" content="{BASE}/{lang}/{slug}"><meta property="og:image" content="{BASE}/assets/images/hero.webp"><link rel="icon" href="../assets/images/favicon.png" type="image/png"><link rel="stylesheet" href="../assets/css/base.css"><link rel="stylesheet" href="../assets/css/layout.css"><link rel="stylesheet" href="../assets/css/components.css"><link rel="stylesheet" href="../assets/css/pages.css"><link rel="stylesheet" href="../assets/css/motion.css"><script src="../assets/js/main.js" defer></script><script src="../assets/js/motion.js" defer></script></head><body>{header(lang,slug,c)}<main id="main">{body}</main>{gallery_dialog(c) if slug in ("index.html", "projects.html") else ""}{footer(c)}</body></html>
 '''
 
 def build():
