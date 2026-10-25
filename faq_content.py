@@ -1,0 +1,55 @@
+"""Conversational FAQ copy; do not promise unconfirmed prices or availability."""
+
+FAQ = {
+    'uk': {
+        'more': 'Більше запитань', 'less': 'Менше запитань',
+        'items': [
+            ('Скільки це буде коштувати?', 'Напишіть, що потрібно зробити, і надішліть кілька фото. Я уточню деталі та скажу, чи достатньо цього для оцінки, чи краще спочатку подивитися приміщення. Вартість обговоримо до початку робіт.'),
+            ('У мене зовсім маленька робота. Можна звернутися?', 'Так, напишіть, що саме потрібно полагодити або встановити. Невеликі завдання теж можна обговорити — я скажу, чи зможу допомогти.'),
+            ('Коли ви зможете почати?', 'Напишіть, коли вам було б зручно, і коротко опишіть роботу. Я перевірю свій графік, а тоді домовимося про дату. Термінові звернення також можна обговорити.'),
+            ('Можна просто скинути фото у WhatsApp?', 'Так, це зручно. Надішліть кілька фото та напишіть, що хочете змінити. Якщо чогось не буде видно, я попрошу додаткове фото або уточню деталі.'),
+            ('Матеріали купувати самому чи ви допоможете?', 'Якщо матеріали вже є, напишіть, які саме. Якщо ще не купували — спочатку обговоримо, що знадобиться та хто це придбає. Так буде менше ризику купити зайве або невідповідне.'),
+            ('А якщо я ще не знаю, як краще зробити?', 'Не обов’язково мати готовий план. Розкажіть, що зараз не подобається і який результат хочете отримати. Обговоримо варіанти та з чого можна почати.'),
+            ('Скільки часу займе ремонт?', 'Це залежить від обсягу робіт, стану приміщення та матеріалів. Після уточнення деталей обговоримо орієнтовну тривалість, включно з паузами на висихання, якщо вони потрібні.'),
+            ('Чи можна жити у квартирі під час робіт?', 'Залежить від того, що саме робимо і в яких кімнатах. Перед початком обговоримо пил, шум і доступ до приміщень, щоб ви могли спланувати побут.'),
+            ('Що мені підготувати до вашого приїзду?', 'Для початку достатньо опису завдання, фото й місця розташування. Коли домовимося про роботу, я підкажу, де потрібен вільний доступ і що варто прибрати або накрити.'),
+            ('Ви виїжджаєте за межі Франкфурта?', 'Я працюю у Франкфурті-на-Майні та околицях. Напишіть населений пункт або поштовий індекс — уточнимо, чи зможу приїхати та на яких умовах.'),
+            ('Що буде, якщо під час ремонту знайдеться ще якась проблема?', 'Якщо виявиться, що потрібні додаткові роботи, спочатку обговоримо їх з вами, а також вплив на вартість і строки. Новий обсяг потрібно погодити перед виконанням.'),
+            ('Як можна оплатити роботу?', 'Спосіб і порядок оплати узгодимо до початку робіт. Якщо вам потрібен рахунок або маєте інші побажання щодо оплати, скажіть про це під час першої розмови.'),
+        ],
+    },
+    'de': {
+        'more': 'Weitere Fragen', 'less': 'Weniger Fragen',
+        'items': [
+            ('Was würde die Arbeit bei mir kosten?', 'Schreiben Sie mir kurz, was gemacht werden soll, und schicken Sie ein paar Fotos. Ich frage nach den nötigen Details und sage Ihnen, ob das für eine Einschätzung reicht oder ob ich mir den Raum vorher ansehen sollte. Den Preis besprechen wir vor Beginn der Arbeiten.'),
+            ('Es ist nur eine Kleinigkeit. Kann ich mich trotzdem melden?', 'Ja, schreiben Sie mir, was repariert oder montiert werden soll. Auch kleine Aufgaben können wir besprechen. Ich sage Ihnen, ob ich helfen kann.'),
+            ('Wann könnten Sie anfangen?', 'Schreiben Sie mir, wann es Ihnen passen würde und was gemacht werden soll. Ich schaue in meinen Kalender, dann vereinbaren wir einen Termin. Auch dringende Anfragen können wir besprechen.'),
+            ('Kann ich Ihnen einfach Fotos per WhatsApp schicken?', 'Ja, gerne. Schicken Sie ein paar Fotos und schreiben Sie dazu, was Sie ändern möchten. Wenn etwas nicht gut zu erkennen ist, frage ich nach oder bitte um ein weiteres Foto.'),
+            ('Muss ich das Material selbst kaufen oder helfen Sie dabei?', 'Wenn Sie schon Material haben, schreiben Sie mir, welches. Wenn noch nichts gekauft ist, besprechen wir zuerst, was gebraucht wird und wer es besorgt. So vermeiden wir möglichst unnötige oder ungeeignete Einkäufe.'),
+            ('Was, wenn ich noch nicht genau weiß, wie es werden soll?', 'Sie brauchen noch keinen fertigen Plan. Erzählen Sie mir, was Sie stört und was Sie sich wünschen. Dann besprechen wir mögliche Lösungen und einen sinnvollen ersten Schritt.'),
+            ('Wie lange dauern die Arbeiten?', 'Das hängt vom Umfang, vom Zustand des Raumes und von den Materialien ab. Sobald die Details klar sind, besprechen wir die voraussichtliche Dauer, bei Bedarf auch mit Trocknungszeiten.'),
+            ('Kann ich während der Arbeiten in der Wohnung bleiben?', 'Das kommt darauf an, was wir machen und welche Räume betroffen sind. Staub, Lärm und den Zugang zu den Räumen besprechen wir vorher, damit Sie Ihren Alltag planen können.'),
+            ('Was muss ich vor Ihrem Besuch vorbereiten?', 'Für den Anfang reichen eine kurze Beschreibung, Fotos und der Standort. Wenn wir die Arbeiten vereinbart haben, sage ich Ihnen, wo ich freien Zugang brauche und was weggeräumt oder abgedeckt werden sollte.'),
+            ('Kommen Sie auch außerhalb von Frankfurt?', 'Ich arbeite in Frankfurt am Main und Umgebung. Schicken Sie mir den Ort oder die Postleitzahl. Dann klären wir, ob eine Anfahrt möglich ist und zu welchen Bedingungen.'),
+            ('Was passiert, wenn während der Arbeiten noch ein Problem auftaucht?', 'Wenn zusätzliche Arbeiten nötig werden, besprechen wir das zuerst mit Ihnen, ebenso die Auswirkungen auf Preis und Dauer. Den zusätzlichen Umfang stimmen wir vor der Ausführung ab.'),
+            ('Wie kann ich bezahlen?', 'Die Zahlungsweise und den Ablauf vereinbaren wir vor Beginn der Arbeiten. Wenn Sie eine Rechnung benötigen oder bestimmte Wünsche zur Zahlung haben, sprechen Sie mich bitte schon beim ersten Gespräch darauf an.'),
+        ],
+    },
+    'en': {
+        'more': 'More questions', 'less': 'Fewer questions',
+        'items': [
+            ('How much would my job cost?', 'Tell me what needs doing and send a few photos. I will ask about the details and let you know whether that is enough for an estimate or whether I should see the space first. We will discuss the price before work starts.'),
+            ('It is only a small job. Can I still get in touch?', 'Yes, tell me what needs fixing or fitting. We can discuss small jobs too, and I will let you know whether I can help.'),
+            ('When could you start?', 'Tell me what needs doing and when would suit you. I will check my schedule, then we can agree on a date. You are welcome to ask about urgent jobs too.'),
+            ('Can I just send you photos on WhatsApp?', 'Yes, that is a good way to start. Send a few photos and tell me what you would like to change. If something is not clear, I will ask a question or request another photo.'),
+            ('Do I buy the materials, or can you help?', 'If you already have materials, tell me what you have. If you have not bought anything yet, we will first discuss what is needed and who will buy it. That helps avoid buying too much or choosing unsuitable materials.'),
+            ('What if I do not know exactly what I want yet?', 'You do not need a finished plan. Tell me what is bothering you and what you would like to improve. We can discuss the options and where to start.'),
+            ('How long will the work take?', 'That depends on the amount of work, the condition of the space and the materials. Once we have discussed the details, we will go over the expected time, including any drying time needed.'),
+            ('Can I stay in the flat while the work is being done?', 'That depends on the work and which rooms are affected. We will talk about dust, noise and access beforehand so you can plan your day-to-day routine.'),
+            ('What should I prepare before you come?', 'To start with, a short description, some photos and the location are enough. Once we agree on the work, I will explain where I need clear access and what should be moved or covered.'),
+            ('Do you travel outside Frankfurt?', 'I work in Frankfurt am Main and the surrounding area. Send me the town or postcode, and we will check whether I can come and discuss any travel arrangements.'),
+            ('What if you find another problem during the work?', 'If extra work is needed, we will discuss it first, including how it affects the price and timing. We will agree on the extra work before it is carried out.'),
+            ('How can I pay?', 'We will agree on the payment method and timing before work starts. If you need an invoice or have a particular payment request, please mention it when we first speak.'),
+        ],
+    },
+}

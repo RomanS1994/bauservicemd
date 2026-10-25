@@ -105,3 +105,12 @@
 .form-status[data-state="success"] { border-left-color: #376540; }
 @keyframes form-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .contact-form[aria-busy="true"] .form-spinner { animation: none; } }
+
+/* Native disclosure keeps the extra questions available without JavaScript. */
+.faq-content { min-width: 0; }
+.faq-more { margin-top: 22px; }
+.faq-more > summary { width: fit-content; list-style: none; }
+.faq-more > summary::-webkit-details-marker { display: none; }
+.faq-less-label, .faq-more[open] > summary .faq-more-label { display: none; }
+.faq-more[open] > summary .faq-less-label { display: inline; }
+.faq-more > .faq-list { margin-top: 18px; }

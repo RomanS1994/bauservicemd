@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 from html import escape as esc
 from privacy_content import POLICY, TITLES
+from faq_content import FAQ
 
 ROOT = Path(__file__).resolve().parent
 BASE = 'https://romans1994.github.io/bauservicemd'
@@ -241,8 +242,11 @@ def prepare_section(c):
     return f'''<section class="section preparation-section" aria-labelledby="prepare-heading"><div class="container preparation-grid"><div>{label('05',c['prepare_label'],c.get('section_numbers', True))}<h2 id="prepare-heading">{c['prepare_title']}</h2><figure>{image('detail',c['illustration'])}</figure></div><ul class="preparation-list">{rows}</ul></div></section>'''
 
 def faq_section(c):
-    rows = ''.join(f'<details{ " open" if i == 0 else ""}><summary>{text(q)}<span aria-hidden="true">+</span></summary><p>{text(a)}</p></details>' for i,(q,a) in enumerate(c['faq']))
-    return f'''<section class="section faq-section" aria-labelledby="faq-heading"><div class="container faq-layout"><div>{label('06',c['faq_label'],c.get('section_numbers', True))}<h2 id="faq-heading">{text(c['faq_title'])}</h2></div><div class="faq-list">{rows}</div></div></section>'''
+    def questions(items, first_open=False):
+        return ''.join(f'<details{ " open" if first_open and i == 0 else ""}><summary>{text(q)}<span aria-hidden="true">+</span></summary><p>{text(a)}</p></details>' for i,(q,a) in enumerate(items))
+    rows = questions(c['faq'][:4], first_open=True)
+    extra = questions(c['faq'][4:])
+    return f'''<section class="section faq-section" aria-labelledby="faq-heading"><div class="container faq-layout"><div>{label('06',c['faq_label'],c.get('section_numbers', True))}<h2 id="faq-heading">{text(c['faq_title'])}</h2></div><div class="faq-content"><div class="faq-list">{rows}</div><details class="faq-more"><summary class="button button-secondary"><span class="faq-more-label">{text(c['faq_more'])}</span><span class="faq-less-label">{text(c['faq_less'])}</span></summary><div class="faq-list">{extra}</div></details></div></div></section>'''
 
 def homepage(c):
     return f'''<section class="hero hero-background" aria-labelledby="hero-heading"><picture class="hero-media" aria-hidden="true"><source media="(max-width: 767px)" srcset="../assets/images/hero-living-mobile.webp"><img src="../assets/images/hero-living.webp" alt="" width="1672" height="941" loading="eager" decoding="async" fetchpriority="high"></picture><div class="container hero-inner"><div class="hero-copy"><p class="eyebrow">{text(c['private'])} · {text(c['region'])}</p><h1 id="hero-heading" class="hero-title">{c['hero_title']}</h1><p class="hero-description">{text(c['hero_description'])}</p><div class="hero-actions">{link('contact.html',c['hero_cta'],'button button-primary')}{link('projects.html',c['view_work'])}</div></div></div></section>{service_section(c)}{projects_section(c)}{about_section(c)}{process_section(c)}{prepare_section(c)}{faq_section(c)}{contact_section(c)}'''
@@ -273,7 +277,7 @@ def page(lang, slug, c):
     return page_hero(c,TITLES[lang],c['privacy_intro'])+f'''<section class="section"><div class="container prose legal-prose">{POLICY[lang]}</div></section>''',TITLES[lang],c['privacy_intro']
 
 def document(lang, slug):
-    c={**COPY[lang], 'section_numbers': slug == 'index.html'}
+    c={**COPY[lang], 'section_numbers': slug == 'index.html', 'faq': FAQ[lang]['items'], 'faq_more': FAQ[lang]['more'], 'faq_less': FAQ[lang]['less']}
     body,title,description=page(lang,slug,c)
     alternates=''.join(f'<link rel="alternate" hreflang="{l}" href="{BASE}/{l}/{slug}">' for l in COPY)
     markup = f'''<!doctype html>
