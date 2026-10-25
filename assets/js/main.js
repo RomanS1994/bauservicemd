@@ -49,7 +49,7 @@
       animation = panel.animate([
         { transform: 'translateX(0)' },
         { transform: 'translateX(-100%)' }
-      ], { duration: 340, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards' });
+      ], { duration: 600, easing: 'cubic-bezier(.65, 0, .35, 1)', fill: 'forwards' });
       animation.addEventListener('finish', finishClose, { once: true });
     };
     toggle.addEventListener('click', () => {
@@ -61,7 +61,7 @@
         animation = panel.animate([
           { transform: 'translateX(-100%)' },
           { transform: 'translateX(0)' }
-        ], { duration: 480, easing: 'cubic-bezier(.22, 1, .36, 1)' });
+        ], { duration: 800, easing: 'cubic-bezier(.65, 0, .35, 1)' });
       }
     });
     panel.querySelector('[data-menu-close]')?.addEventListener('click', () => closeMenu());

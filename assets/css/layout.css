@@ -154,7 +154,7 @@
 }
 
 /* Native modal drawer: full viewport on mobile, with its own scroll area. */
-.mobile-drawer { position: fixed; inset: 0; width: 100%; max-width: none; height: 100vh; height: 100dvh; max-height: none; margin: 0; border: 0; padding: max(20px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(28px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); background: var(--color-background); color: var(--color-ink); overflow-y: auto; overscroll-behavior: contain; }
+.mobile-drawer { position: fixed; inset: 0; width: 100%; max-width: none; height: 100vh; height: 100dvh; max-height: none; margin: 0; border: 0; padding: max(20px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(28px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); background: #fff; color: var(--color-ink); overflow-y: auto; overscroll-behavior: contain; }
 .mobile-drawer[open] { display: flex; flex-direction: column; }
 .mobile-drawer::backdrop { background: #24252266; }
 .drawer-top { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--color-line); }
