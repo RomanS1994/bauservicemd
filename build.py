@@ -196,7 +196,7 @@ def footer(c):
 <div><a class="brand footer-brand" href="index.html"><img src="../assets/images/logo.webp" alt="BauServiceMD" width="260" height="172" loading="lazy"></a><p>{text(c['footer_line'])}</p></div>
 <nav class="footer-links" aria-label="{c['menu']}">{nav}</nav>
 <div class="footer-contact"><a href="tel:+4915778582592">{PHONE}</a><a href="mailto:{EMAIL}">{EMAIL}</a><p>{text(c['region'])}</p></div>
-<div class="footer-legal"><a href="impressum.html">Impressum</a><a href="privacy.html">Datenschutzerklärung</a></div>
+<div class="footer-legal"><a href="impressum.html">{text(c['footer_impressum'])}</a><a href="privacy.html">{text(c['footer_privacy'])}</a></div>
 </div></footer>'''
 
 def form(c):
@@ -277,7 +277,7 @@ def page(lang, slug, c):
     return page_hero(c,TITLES[lang],c['privacy_intro'])+f'''<section class="section"><div class="container prose legal-prose">{POLICY[lang]}</div></section>''',TITLES[lang],c['privacy_intro']
 
 def document(lang, slug):
-    c={**COPY[lang], 'section_numbers': slug == 'index.html', 'faq': FAQ[lang]['items'], 'faq_more': FAQ[lang]['more'], 'faq_less': FAQ[lang]['less']}
+    c={**COPY[lang], 'section_numbers': slug == 'index.html', 'faq': FAQ[lang]['items'], 'faq_more': FAQ[lang]['more'], 'faq_less': FAQ[lang]['less'], 'footer_impressum': {'uk': 'Юридична інформація', 'de': 'Impressum', 'en': 'Legal notice'}[lang], 'footer_privacy': {'uk': 'Політика конфіденційності', 'de': 'Datenschutzerklärung', 'en': 'Privacy policy'}[lang]}
     body,title,description=page(lang,slug,c)
     alternates=''.join(f'<link rel="alternate" hreflang="{l}" href="{BASE}/{l}/{slug}">' for l in COPY)
     markup = f'''<!doctype html>
