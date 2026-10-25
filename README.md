@@ -20,6 +20,6 @@ The form opens a prepared email draft in the visitor's email application. It doe
 
 ## Content
 
-Generated photographs are labelled as illustrative. They must not be presented as completed client projects. Replace them with owner-approved project photographs when available. The legal pages clearly identify missing owner information and need owner review before use as final legal notices.
+The photographs are generated design assets, not verified photographs of completed client commissions. Replace them with owner-approved project photographs when available. The legal pages clearly identify missing owner information and need owner review before use as final legal notices.
 
 Business contact: +49 1577 8582592 · renovierungsservicedima@gmail.com
