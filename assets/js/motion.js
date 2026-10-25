@@ -10,10 +10,10 @@
   let progress;
   let frame = 0;
   const ease = 'cubic-bezier(.22, 1, .36, 1)';
-  const play = (element, frames, duration = 750, delay = 0) => {
+  const play = (element, frames, duration = 750, delay = 0, easing = ease) => {
     if (!element || preference.matches || seen.has(element)) return;
     seen.add(element);
-    const animation = element.animate(frames, { duration, delay, easing: ease, fill: 'backwards' });
+    const animation = element.animate(frames, { duration, delay, easing, fill: 'backwards' });
     active.add(animation);
     const finish = () => active.delete(animation);
     animation.addEventListener('finish', finish, { once: true });
@@ -44,11 +44,21 @@
     if (preference.matches) return;
     const hero = document.querySelector('.hero-copy');
     if (hero) {
-      ['.eyebrow', '.hero-title', '.hero-description', '.hero-actions'].forEach((selector, index) => rise(hero.querySelector(selector), index * 90));
-      play(document.querySelector('.hero-media img'), [
-        { transform: 'scale(1.04)' },
+      const heroEase = 'cubic-bezier(.25, .1, .25, 1)';
+      ['.eyebrow', '.hero-title', '.hero-description', '.hero-actions'].forEach((selector, index) => {
+        play(hero.querySelector(selector), [
+          { opacity: 0, transform: 'translateY(12px)' },
+          { opacity: 1, transform: 'translateY(0)' }
+        ], 1200, index * 100, heroEase);
+      });
+      const photo = document.querySelector('.hero-media img');
+      const revealHeroPhoto = () => play(photo, [
+        { transform: 'scale(1.025)' },
         { transform: 'scale(1)' }
-      ], 1400);
+      ], 3000, 0, heroEase);
+      // Start the gentle zoom when the photograph is actually visible.
+      if (photo?.complete && photo.naturalWidth) revealHeroPhoto();
+      else photo?.addEventListener('load', revealHeroPhoto, { once: true });
     } else {
       document.querySelectorAll('.page-hero h1, .page-hero .section-intro').forEach((element, index) => rise(element, index * 100));
     }
