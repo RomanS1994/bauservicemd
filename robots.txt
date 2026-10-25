@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://romans1994.github.io/bauservicemd/sitemap.xml
