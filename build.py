@@ -129,8 +129,8 @@ SERVICE_SLUGS = SLUGS[2:6]
 def text(s):
     return esc(s, quote=True)
 
-def arrow():
-    return '<span aria-hidden="true">↗</span>'
+def arrow(cls=''):
+    return f'<svg class="icon-arrow {cls}" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg>'
 
 def link(href, label, cls='text-link'):
     return f'<a class="{cls}" href="{href}">{text(label)} {arrow()}</a>'
@@ -191,7 +191,7 @@ def contact_section(c, full=False):
     return f'''<section class="section contact-section" id="contact" aria-labelledby="contact-heading"><div class="container contact-grid"><div class="contact-copy">{label('07',c['contact_label'],c.get('section_numbers', True))}<h2 id="contact-heading">{c['contact_title']}</h2><p>{text(c['contact_intro'])}</p><div class="contact-options">{link(WA,'WhatsApp','button button-secondary')}{link('tel:+4915778582592',c['call'],'button button-secondary')}</div><p><a class="text-link" href="mailto:{EMAIL}">{text(c['write'])} {arrow()}</a></p>{details}</div><div><h3 class="form-heading">{text(c['form_title'])}</h3>{form(c)}</div></div></section>'''
 
 def service_list(c):
-    return '<div class="service-list">' + ''.join(f'''<a class="service-row" href="{slug}"><span class="service-number">0{i+1}</span><div class="service-content"><h3>{text(item[0])}</h3><p>{text(item[1])}</p></div><span class="service-arrow" aria-hidden="true">↗</span></a>''' for i,(slug,item) in enumerate(zip(SERVICE_SLUGS,c['services']))) + '</div>'
+    return '<div class="service-list">' + ''.join(f'''<a class="service-row" href="{slug}"><span class="service-number">0{i+1}</span><div class="service-content"><h3>{text(item[0])}</h3><p>{text(item[1])}</p></div>{arrow('service-arrow')}</a>''' for i,(slug,item) in enumerate(zip(SERVICE_SLUGS,c['services']))) + '</div>'
 
 def service_section(c):
     return f'''<section class="section services-section" aria-labelledby="services-heading"><div class="container services-layout"><div class="services-intro">{label('01',c['services_label'],c.get('section_numbers', True))}<h2 id="services-heading">{c['services_title']}</h2><p>{text(c['services_intro'])}</p><figure>{image('detail',c['illustration'])}</figure></div><div>{service_list(c)}<p class="section-note">{text(c['services_note'])}</p>{link('services.html',c['all_services'])}</div></div></section>'''

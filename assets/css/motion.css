@@ -14,7 +14,7 @@
   .services-intro figure, .preparation-grid figure, .page-grid figure, .service-detail-grid figure, .example-hero, .about-band-grid figure { overflow: hidden; border-radius: var(--radius); }
   .button { position: relative; overflow: hidden; isolation: isolate; transition: background-color .25s ease, color .25s ease, border-color .25s ease, transform .25s ease, box-shadow .25s ease; }
   .button-primary::before { content: ""; position: absolute; z-index: -1; inset: 0; background: #ffffff18; transform: translateX(-101%); transition: transform .4s cubic-bezier(.22, 1, .36, 1); }
-  .button span[aria-hidden], .text-link span[aria-hidden] { transition: transform .25s ease; }
+  .button .icon-arrow, .text-link .icon-arrow { transition: transform .25s ease; }
   .button:active { transform: translateY(1px); }
   .form-field input, .form-field textarea { transition: border-color .2s ease, box-shadow .2s ease; }
   .form-field input:focus, .form-field textarea:focus { border-color: var(--color-copper); box-shadow: 0 0 0 3px #a6533010; }
@@ -34,7 +34,7 @@
   .button:hover { transform: translateY(-2px); }
   .button-primary:hover { box-shadow: 0 8px 22px #a6533025; }
   .button-primary:hover::before { transform: translateX(0); }
-  .button:hover span[aria-hidden], .text-link:hover span[aria-hidden] { transform: translate(3px, -3px); }
+  .button:hover .icon-arrow, .text-link:hover .icon-arrow { transform: translate(3px, -3px); }
   .site-nav a:hover::after { transform: scaleX(1); }
   .service-row:hover { border-color: #a6533055; background-color: #a6533005; }
   .service-row:hover .service-content h3 { transform: translateX(4px); }

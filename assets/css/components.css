@@ -11,7 +11,8 @@
 .service-number { color: var(--color-muted); font-size: 12px; padding-top: 4px; }
 .service-content h3 { font-size: 20px; letter-spacing: -.025em; }
 .service-content p { color: var(--color-muted); font-size: 15px; margin-top: 8px; line-height: 1.6; }
-.service-arrow { color: var(--color-copper); font-size: 24px; line-height: 1.2; }
+.icon-arrow { display: inline-block; width: 20px; height: 20px; flex: 0 0 auto; vertical-align: middle; pointer-events: none; }
+.service-arrow { color: var(--color-copper); width: 24px; height: 24px; }
 .service-row:hover .service-content h3 { color: var(--color-copper); }
 .service-list > p, .services-layout > .image-caption { margin-top: 18px; }
 .project-card > a { display: block; text-decoration: none; }
