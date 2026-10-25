@@ -20,8 +20,8 @@ POLICY = {
 <p>Beim Besuch dieser Website werden technisch notwendige Daten verarbeitet, damit die Website angezeigt werden kann und ein sicherer Betrieb möglich ist. Dazu können insbesondere folgende Informationen gehören:</p>
 <ul><li>IP-Adresse;</li><li>Datum und Uhrzeit des Zugriffs;</li><li>Aufgerufene Seiten;</li><li>Browsertyp und Betriebssystem;</li><li>Technische Informationen zur Anfrage.</li></ul>
 <p>Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Mein berechtigtes Interesse liegt darin, die Website sicher und funktionsfähig bereitzustellen.</p>
-<p>Hosting-Anbieter: GitHub Pages, GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA. Weitere Informationen finden Sie in der <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung von GitHub</a>.</p>
-<p class="notice">Speicherdauer der Server-Logfiles: [Noch ergänzen: konkrete Speicherdauer beim Hosting-Anbieter klären]</p></section>
+<p>Diese Website wird bei Netlify, Inc. gehostet. Zur Auslieferung der Seiten und zum sicheren Betrieb verarbeitet der Hosting-Anbieter technische Anfragedaten. Weitere Informationen finden Sie in der <a href="https://www.netlify.com/privacy/">Datenschutzerklärung von Netlify</a>.</p>
+</section>
 
 <section aria-labelledby="privacy-3"><h2 id="privacy-3">3. Kontaktaufnahme</h2>
 <p>Wenn Sie mich telefonisch, per E-Mail, über das Kontaktformular oder über WhatsApp kontaktieren, verwende ich Ihre Angaben ausschließlich zur Bearbeitung Ihrer Anfrage sowie gegebenenfalls zur Vorbereitung und Durchführung eines Auftrags. Dabei können Ihr Name, Ihre Kontaktdaten, Nachrichten und freiwillig zugesandte Fotos verarbeitet werden.</p>
@@ -52,7 +52,7 @@ POLICY = {
 <section aria-labelledby="privacy-9"><h2 id="privacy-9">9. Cookies und externe Dienste</h2>
 <p>Diese Website setzt keine eigenen Cookies ein und verwendet keine Tracking- oder Analysewerkzeuge. Es werden keine Karten, Videos oder Webfonts von Drittanbietern eingebettet. Die Bilder, Stylesheets und Skripte der Website werden zusammen mit der Website bereitgestellt; für die Schrift verwendet sie die auf Ihrem Gerät verfügbaren Systemschriften.</p>
 <p>Beim Absenden des Kontaktformulars werden Ihr Name, die angegebenen Kontaktdaten und Ihre Nachricht über FormSubmit (formsubmit.co) an meine E-Mail-Adresse übermittelt. FormSubmit verarbeitet dabei auch technische Anfragedaten. Laut Dokumentation speichert FormSubmit Formulareingaben für 30 Tage. Weitere Informationen: <a href="https://formsubmit.co/privacy.pdf">Datenschutzhinweise von FormSubmit</a>. Die Website speichert Formulareingaben nicht in localStorage oder vergleichbaren Browserspeichern. Ohne Absenden der Form werden keine Formulardaten an FormSubmit übermittelt.</p>
-<p>WhatsApp und andere verlinkte externe Seiten werden erst durch Ihren Klick geöffnet. Unabhängig davon kann der Hosting-Anbieter GitHub beim Abruf der Website technische Anfragedaten verarbeiten; hierzu gelten die Informationen in Abschnitt 2 und die Datenschutzerklärung des Anbieters.</p></section>
+<p>WhatsApp und andere verlinkte externe Seiten werden erst durch Ihren Klick geöffnet. Unabhängig davon kann der Hosting-Anbieter Netlify beim Abruf der Website technische Anfragedaten verarbeiten; hierzu gelten die Informationen in Abschnitt 2 und die Datenschutzerklärung des Anbieters.</p></section>
 ''',
     'uk': '''
 <section aria-labelledby="privacy-1"><h2 id="privacy-1">1. Відповідальний за обробку даних</h2>
@@ -63,8 +63,8 @@ POLICY = {
 <p>Під час відкриття цього сайту обробляється технічно необхідна інформація. До неї, зокрема, можуть належати:</p>
 <ul><li>IP-адреса пристрою, з якого надійшов запит;</li><li>дата та час доступу;</li><li>відкриті сторінки й файли;</li><li>інформація про браузер та операційну систему;</li><li>технічна інформація про запит.</li></ul>
 <p>Ці дані обробляються для безпечної та належної роботи сайту. Правова підстава — стаття 6, пункт 1, літера f GDPR. Законний інтерес полягає в забезпеченні безпечної та безперебійної роботи сайту.</p>
-<p>Сайт розміщено на GitHub Pages. Постачальник хостингу — GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA. Під час обробки запитів до сторінок постачальник може обробляти персональні дані під власну відповідальність. Докладніше — у <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">політиці конфіденційності GitHub</a>.</p>
-<p class="notice">[Потрібно доповнити: уточнити конкретний строк зберігання даних у постачальника хостингу]</p></section>
+<p>Сайт розміщено на хостингу Netlify, Inc. Для показу сторінок і безпечної роботи сайту постачальник хостингу обробляє технічні дані запитів. Докладніше — у <a href="https://www.netlify.com/privacy/">політиці конфіденційності Netlify</a>.</p>
+</section>
 
 <section aria-labelledby="privacy-3"><h2 id="privacy-3">3. Звернення</h2>
 <p>Якщо ви звертаєтеся до мене телефоном, електронною поштою або через WhatsApp, я використовую ваші дані виключно для розгляду звернення та, за потреби, підготовки й виконання замовлення. При цьому можуть оброблятися ваше ім’я, контактні дані, повідомлення та добровільно надіслані фотографії.</p>
@@ -105,8 +105,8 @@ POLICY = {
 <p>Technically necessary information is processed when you access this website. This may include, in particular:</p>
 <ul><li>the IP address of the requesting device;</li><li>the date and time of access;</li><li>the pages and files requested;</li><li>information about the browser and operating system used;</li><li>technical information about the request.</li></ul>
 <p>This information is processed to provide a secure and functional website. The legal basis is Article 6(1)(f) GDPR. The legitimate interest is the secure and uninterrupted operation of the website.</p>
-<p>The website is hosted using GitHub Pages. The hosting provider is GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA. The provider may process personal data under its own responsibility when handling page requests. Further information is available in the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub privacy statement</a>.</p>
-<p class="notice">[To be completed: clarify the specific retention period with the hosting provider]</p></section>
+<p>This website is hosted by Netlify, Inc. The hosting provider processes technical request data to deliver pages and keep the website secure. Further information is available in the <a href="https://www.netlify.com/privacy/">Netlify privacy statement</a>.</p>
+</section>
 
 <section aria-labelledby="privacy-3"><h2 id="privacy-3">3. Contact enquiries</h2>
 <p>If you contact me by phone, email or WhatsApp, I use your details exclusively to handle your enquiry and, where applicable, to prepare and carry out an order. This may involve processing your name, contact details, messages and voluntarily provided photographs.</p>
