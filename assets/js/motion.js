@@ -1,98 +1,56 @@
-/* Native, once-only motion. No dependencies, tracking, or persistent state. */
+/* Motion belongs to text and accents. Image pixels never fade or restart on load. */
 (() => {
   'use strict';
   const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (typeof Element.prototype.animate !== 'function') return;
-
   const active = new Set();
   const seen = new WeakSet();
+  const ease = 'cubic-bezier(.16, 1, .3, 1)';
   let observer;
   let progress;
   let frame = 0;
-  const ease = 'cubic-bezier(.22, 1, .36, 1)';
-  const animateMotion = (element, frames, duration = 750, delay = 0, easing = ease) => {
-    if (!element || preference.matches) return;
-    const animation = element.animate(frames, { duration, delay, easing, fill: 'backwards' });
+  const move = (element, offset = 18, delay = 0) => {
+    if (!element || preference.matches || typeof element.animate !== 'function') return;
+    // Never promote a photograph, or one of its ancestors, to an animated layer.
+    if (element.matches('img, picture, figure') || element.querySelector('img, picture')) return;
+    const animation = element.animate([
+      { transform: `translateY(${offset}px)` },
+      { transform: 'translateY(0)' }
+    ], { duration: 1300, delay, easing: ease });
     active.add(animation);
     const finish = () => active.delete(animation);
     animation.addEventListener('finish', finish, { once: true });
     animation.addEventListener('cancel', finish, { once: true });
   };
-  const play = (element, frames, duration = 750, delay = 0, easing = ease) => {
-    if (!element || preference.matches || seen.has(element)) return;
-    seen.add(element);
-    animateMotion(element, frames, duration, delay, easing);
-  };
-  const rise = (element, delay = 0) => play(element, [
-    { transform: 'translateY(14px)' },
-    { transform: 'translateY(0)' }
-  ], 1100, delay);
-  const revealImage = (image, delay = 0) => play(image, [
-    { transform: 'scale(1.025)' },
-    { transform: 'scale(1)' }
-  ], 1500, delay);
-
   const updateProgress = () => {
     frame = 0;
     if (!progress || preference.matches) return;
     const page = document.documentElement;
     const distance = page.scrollHeight - page.clientHeight;
-    const value = distance > 0 ? Math.min(1, Math.max(0, window.scrollY / distance)) : 0;
-    progress.style.transform = `scaleX(${value})`;
+    progress.style.transform = `scaleX(${distance > 0 ? Math.min(1, Math.max(0, window.scrollY / distance)) : 0})`;
   };
   const requestProgress = () => {
     if (!preference.matches && !frame) frame = requestAnimationFrame(updateProgress);
   };
-
   const start = () => {
     if (preference.matches) return;
-    const hero = document.querySelector('.hero-copy');
-    if (hero) {
-      const heroEase = 'cubic-bezier(.25, .1, .25, 1)';
-      ['.eyebrow', '.hero-title', '.hero-description', '.hero-actions'].forEach((selector, index) => {
-        play(hero.querySelector(selector), [
-          { transform: 'translateY(12px)' },
-          { transform: 'translateY(0)' }
-        ], 1200, index * 100, heroEase);
-      });
-      const photo = document.querySelector('.hero-media img');
-      const revealHeroPhoto = () => play(photo, [
-        { transform: 'scale(1.025)' },
-        { transform: 'scale(1)' }
-      ], 3000, 0, heroEase);
-      // Start the gentle zoom when the photograph is actually visible.
-      if (photo?.complete && photo.naturalWidth) revealHeroPhoto();
-      else photo?.addEventListener('load', revealHeroPhoto, { once: true });
-    } else {
-      document.querySelectorAll('.page-hero h1, .page-hero .section-intro').forEach((element, index) => rise(element, index * 100));
-    }
-
     if ('IntersectionObserver' in window) {
       observer = new IntersectionObserver((entries) => {
         entries.forEach(({ target, isIntersecting }) => {
           if (!isIntersecting) return;
           observer.unobserve(target);
+          if (seen.has(target)) return;
+          seen.add(target);
           target.classList.add('is-in-view');
-          const staggered = target.matches('.service-row, .step, .preparation-list li, .faq-list > details, .footer-grid > *');
-          const index = staggered ? Array.from(target.parentElement.children).indexOf(target) : 0;
-          const delay = Math.min(index, 3) * 75;
-          if (target.matches('figure')) {
-            revealImage(target.querySelector('img'));
-          } else {
-            rise(target, delay);
-            if (target.matches('.project-card')) revealImage(target.querySelector('img'), 90);
-            if (target.matches('.step')) play(target.querySelector('.step-number'), [
-              { transform: 'translateY(8px) scale(.96)' },
-              { transform: 'translateY(0) scale(1)' }
-            ], 850, delay + 80);
-          }
+          if (target.matches('figure, .project-card, .step')) return;
+          const group = target.closest('.service-list, .preparation-list, .faq-list, .steps');
+          const siblings = group ? Array.from(group.children) : [];
+          const unit = group ? target.closest('.service-row, li, details') : null;
+          move(target, target.matches('.eyebrow') ? 8 : 18, Math.max(0, Math.min(siblings.indexOf(unit), 3)) * 110);
         });
-      }, { threshold: .08, rootMargin: '0px 0px -28px 0px' });
-      // Animate each outer unit once: nested targets otherwise move twice.
-      // Keep painted content visible when the observer starts, even on slow loads.
-      const targets = Array.from(document.querySelectorAll('.services-intro, .service-row, .section-top, .project-card, .about-band-grid > *, .step, .preparation-grid > div, .preparation-list li, .faq-layout > div, .contact-copy, .contact-form, .services-intro figure, .preparation-grid figure, .page-grid figure, .service-detail-grid figure, .example-hero, .section .section-label, .section h2, .faq-list > details, .footer-grid > *'));
-      const units = new Set(targets);
-      targets.forEach((element) => {
+      }, { threshold: .12, rootMargin: '0px 0px 40px 0px' });
+      const targets = Array.from(document.querySelectorAll('.section .eyebrow, .section h2, .services-intro > p:not(.eyebrow), .service-content, .section-intro, .section-top > .text-link, .project-card, .project-card h3, .project-card > .text-link, .about-band-grid > div > p:not(.eyebrow), .about-band-grid > div > .text-link, .step, .step h3, .step p, .preparation-list li, .faq-list > details, .contact-copy > p:not(.eyebrow), .contact-options, .form-heading, .contact-form, .services-intro figure, .preparation-grid figure, .page-grid figure, .service-detail-grid figure, .about-band-grid figure, .example-hero'));
+      const units = new Set(targets.filter(el => !el.matches('figure, .project-card, .step')));
+      targets.forEach(element => {
         for (let parent = element.parentElement; parent; parent = parent.parentElement) {
           if (units.has(parent)) return;
         }
@@ -107,45 +65,20 @@
     }
     updateProgress();
   };
-
   window.addEventListener('scroll', requestProgress, { passive: true });
   window.addEventListener('resize', requestProgress, { passive: true });
   window.addEventListener('load', requestProgress, { once: true });
   window.addEventListener('pageshow', requestProgress);
-  document.querySelectorAll('.faq-list details').forEach((details) => {
+  document.querySelectorAll('.faq-list details').forEach(details => {
     details.addEventListener('toggle', () => {
       requestProgress();
-      if (!details.open || preference.matches) return;
-      const content = details.querySelector('p');
-      if (!content) return;
-      const animation = content.animate([{ transform: 'translateY(-4px)' }, { transform: 'translateY(0)' }], { duration: 450, easing: ease });
-      active.add(animation);
-      const finish = () => active.delete(animation);
-      animation.addEventListener('finish', finish, { once: true });
-      animation.addEventListener('cancel', finish, { once: true });
+      if (details.open) move(details.querySelector('p'), -6);
     });
   });
-  document.querySelectorAll('.faq-more').forEach((more) => {
-    more.addEventListener('toggle', () => {
-      requestProgress();
-      if (!more.open) return;
-      animateMotion(more.querySelector('.faq-list'), [
-        { transform: 'translateY(6px)' },
-        { transform: 'translateY(0)' }
-      ], 450);
-    });
-  });
-  const galleryPhoto = document.querySelector('[data-gallery-photo]');
-  galleryPhoto?.addEventListener('load', () => {
-    if (!galleryPhoto.closest('dialog')?.open) return;
-    animateMotion(galleryPhoto, [
-      { opacity: .5, transform: 'scale(.985)' },
-      { opacity: 1, transform: 'scale(1)' }
-    ], 400);
-  });
+  document.querySelectorAll('.faq-more').forEach(more => more.addEventListener('toggle', requestProgress));
   preference.addEventListener('change', () => {
     observer?.disconnect();
-    active.forEach((animation) => animation.cancel());
+    active.forEach(animation => animation.cancel());
     active.clear();
     if (frame) cancelAnimationFrame(frame);
     frame = 0;

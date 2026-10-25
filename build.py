@@ -262,7 +262,21 @@ def faq_section(c):
     return f'''<section class="section faq-section" aria-labelledby="faq-heading"><div class="container faq-layout"><div>{label('06',c['faq_label'],c.get('section_numbers', True))}<h2 id="faq-heading">{text(c['faq_title'])}</h2></div><div class="faq-content"><div class="faq-list">{rows}</div><details class="faq-more"><summary class="button button-secondary"><span class="faq-more-label">{text(c['faq_more'])}</span><span class="faq-less-label">{text(c['faq_less'])}</span></summary><div class="faq-list">{extra}</div></details></div></div></section>'''
 
 def homepage(c):
-    return f'''<section class="hero hero-background" aria-labelledby="hero-heading"><picture class="hero-media" aria-hidden="true"><source media="(max-width: 767px)" srcset="../assets/images/hero-living-mobile.webp"><img src="../assets/images/hero-living.webp" alt="" width="1672" height="941" loading="eager" decoding="async" fetchpriority="high"></picture><div class="container hero-inner"><div class="hero-copy"><p class="eyebrow">{text(c['private'])} · {text(c['region'])}</p><h1 id="hero-heading" class="hero-title">{c['hero_title']}</h1><p class="hero-description">{text(c['hero_description'])}</p><div class="hero-actions">{link('contact.html',c['hero_cta'],'button button-primary')}{link('projects.html',c['view_work'])}</div></div></div></section>{service_section(c)}{projects_section(c)}{about_section(c)}{process_section(c)}{prepare_section(c)}{faq_section(c)}{contact_section(c)}'''
+    # Keep words intact on small screens and expose one natural heading to readers.
+    hero_lines = []
+    char_index = 0
+    for line in c['hero_title'].split('<br>'):
+        words = []
+        for word in line.split():
+            letters = []
+            for char in word:
+                letters.append(f'<span class="hero-char" style="--char-delay:{min(char_index * 24, 1000)}ms">{text(char)}</span>')
+                char_index += 1
+            words.append('<span class="hero-word">' + ''.join(letters) + '</span>')
+            char_index += 1
+        hero_lines.append('<span class="hero-line" aria-hidden="true">' + ' '.join(words) + '</span>')
+    hero_title = ' '.join(hero_lines)
+    return f'''<section class="hero hero-background" aria-labelledby="hero-heading"><picture class="hero-media" aria-hidden="true"><source media="(max-width: 767px)" srcset="../assets/images/hero-living-mobile.webp"><img src="../assets/images/hero-living.webp" alt="" width="1672" height="941" loading="eager" fetchpriority="high"></picture><div class="container hero-inner"><div class="hero-copy"><p class="eyebrow">{text(c['private'])} · {text(c['region'])}</p><h1 id="hero-heading" class="hero-title" aria-label="{text(title_plain(c['hero_title']))}">{hero_title}</h1><p class="hero-description">{text(c['hero_description'])}</p><div class="hero-actions">{link('contact.html',c['hero_cta'],'button button-primary')}{link('projects.html',c['view_work'])}</div></div></div></section>{service_section(c)}{projects_section(c)}{about_section(c)}{process_section(c)}{prepare_section(c)}{faq_section(c)}{contact_section(c)}'''
 
 def page_hero(c, title, subtitle='', crumb=None):
     return f'''<section class="section page-hero"><div class="container"><nav class="breadcrumbs" aria-label="{text(c['home'])}"><a href="index.html">{text(c['home'])}</a><span aria-hidden="true">/</span><span>{text(crumb or title_plain(title))}</span></nav><h1>{title}</h1>{f'<p class="section-intro">{text(subtitle)}</p>' if subtitle else ''}</div></section>'''
