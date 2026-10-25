@@ -273,7 +273,7 @@ def page(lang, slug, c):
     if slug=='contact.html':
         return page_hero(c,c['contact_page_title'],c['contact_intro'])+contact_section(c,True)+faq_section(c),c['contact_label'],c['contact_intro']
     if slug=='impressum.html':
-        return page_hero(c,c['impressum_title'],c['legal_intro'])+f'''<section class="section"><div class="container prose legal-prose"><h2>Renovierungsservice Dmytro Mykhavkiv</h2><dl class="contact-details"><div><dt>{text(c['owner'])}</dt><dd>Dmytro Mykhavkiv</dd></div><div><dt>{text(c['address'])}</dt><dd>Ringelstraße 54<br>60385 Frankfurt am Main<br>Deutschland</dd></div><div><dt>{text(c['phone_label'])}</dt><dd><a href="tel:+4915778582592">{PHONE}</a></dd></div><div><dt>{text(c['email_label'])}</dt><dd><a href="mailto:{EMAIL}">{EMAIL}</a></dd></div></dl><p class="notice">{text(c['pending'])}</p></div></section>''',c['impressum_title'],c['legal_intro']
+        return page_hero(c,c['impressum_title'],c['legal_intro'])+f'''<section class="section"><div class="container prose legal-prose"><h2>Renovierungsservice Dmytro Mykhavkiv</h2><dl class="contact-details"><div><dt>{text(c['owner'])}</dt><dd>Dmytro Mykhavkiv</dd></div><div><dt>{text(c['address'])}</dt><dd>Ringelstraße 54<br>60385 Frankfurt am Main<br>Deutschland</dd></div><div><dt>{text(c['phone_label'])}</dt><dd><a href="tel:+4915778582592">{PHONE}</a></dd></div><div><dt>{text(c['email_label'])}</dt><dd><a href="mailto:{EMAIL}">{EMAIL}</a></dd></div></dl></div></section>''',c['impressum_title'],c['legal_intro']
     return page_hero(c,TITLES[lang],c['privacy_intro'])+f'''<section class="section"><div class="container prose legal-prose">{POLICY[lang]}</div></section>''',TITLES[lang],c['privacy_intro']
 
 def document(lang, slug):
