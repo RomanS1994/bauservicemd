@@ -205,7 +205,7 @@ def form(c):
 <div class="form-field"><label for="contact-reply">{text(c['contact'])} <span aria-hidden="true">*</span></label><input id="contact-reply" name="contact" type="text" autocomplete="email" maxlength="180" required placeholder="{text(c['contact_placeholder'])}"></div></div>
 <div class="form-field"><label for="contact-message">{text(c['message'])} <span aria-hidden="true">*</span></label><textarea id="contact-message" name="message" rows="5" maxlength="4000" required placeholder="{text(c['message_placeholder'])}"></textarea></div>
 <button class="button button-primary" type="submit"><span data-submit-label>{text(c['submit'])}</span><span class="form-spinner" aria-hidden="true"></span> {arrow()}</button>
-<p class="form-note">{text(c['form_note'])}</p><a class="text-link" href="privacy.html">{text(c['privacy_link'])}</a><p class="form-status" data-form-status role="status" aria-live="polite"></p></form>'''
+<a class="text-link" href="privacy.html">{text(c['privacy_link'])}</a><p class="form-status" data-form-status role="status" aria-live="polite"></p></form>'''
 
 def contact_section(c, full=False):
     details = f'''<dl class="contact-details"><div><dt>{text(c['phone_label'])}</dt><dd><a href="tel:+4915778582592">{PHONE}</a></dd></div><div><dt>{text(c['email_label'])}</dt><dd><a href="mailto:{EMAIL}">{EMAIL}</a></dd></div><div><dt>{text(c['region'])}</dt><dd>Frankfurt am Main, Deutschland</dd></div></dl>''' if full else ''
