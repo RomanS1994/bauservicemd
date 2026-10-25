@@ -1,6 +1,7 @@
 :root {
   color-scheme: light;
   --color-white: #fff;
+  --color-background: #faf7f0;
   --color-ink: #242522;
   --color-muted: #646660;
   --color-copper: #a65330;
@@ -15,7 +16,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 112px; -webkit-text-size-adjust: 100%; }
-body { margin: 0; background: var(--color-white); color: var(--color-ink); font-family: var(--font-body); font-size: 17px; line-height: 1.65; }
+body { margin: 0; background: var(--color-background); color: var(--color-ink); font-family: var(--font-body); font-size: 17px; line-height: 1.65; }
 body, button, input, textarea, select { font-synthesis: none; }
 img, picture, svg { display: block; max-width: 100%; }
 img { height: auto; }
