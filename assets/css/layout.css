@@ -152,3 +152,24 @@
   .brand { width: 170px; }
   .header-actions > .button { display: none; }
 }
+
+/* Native modal drawer: full viewport on mobile, with its own scroll area. */
+.mobile-drawer { position: fixed; inset: 0; width: 100%; max-width: none; height: 100vh; height: 100dvh; max-height: none; margin: 0; border: 0; padding: max(20px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(28px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); background: var(--color-background); color: var(--color-ink); overflow-y: auto; overscroll-behavior: contain; }
+.mobile-drawer[open] { display: flex; flex-direction: column; }
+.mobile-drawer::backdrop { background: #24252266; }
+.drawer-top { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--color-line); }
+.drawer-top .brand { width: 170px; }
+.drawer-top .brand img { max-height: 76px; }
+.drawer-close { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; flex: 0 0 48px; border: 1px solid var(--color-line); border-radius: 5px; color: var(--color-copper); background: transparent; }
+.drawer-nav { display: flex; flex: 1 0 auto; flex-direction: column; justify-content: center; gap: 0; padding-block: 32px; }
+.drawer-nav a { display: block; padding-block: 17px; border-bottom: 1px solid var(--color-line); font-family: var(--font-heading); font-size: clamp(1.6rem, 6vw, 2.5rem); font-weight: 550; line-height: 1.25; letter-spacing: -.035em; text-decoration: none; }
+.drawer-nav a[aria-current="page"] { color: var(--color-copper); }
+.drawer-languages { flex: 0 0 auto; padding-top: 22px; border-top: 1px solid var(--color-line); }
+.drawer-languages > p { margin-bottom: 8px; color: var(--color-muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.drawer-languages .language-switcher { justify-content: flex-start; gap: 20px; }
+.drawer-languages .language-switcher a { min-width: 44px; min-height: 48px; padding: 8px 4px; font-size: 18px; }
+html.mobile-menu-open { overflow: hidden; }
+@media (max-width: 1023px) {
+  html.js .header-actions > .language-switcher { display: none; }
+  .header-inner { flex-wrap: nowrap; }
+}

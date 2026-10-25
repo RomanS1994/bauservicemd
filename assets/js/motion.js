@@ -146,18 +146,6 @@
       { opacity: 1, transform: 'scale(1)' }
     ], 400);
   });
-  const menu = document.querySelector('[data-menu]');
-  const toggle = document.querySelector('[data-menu-toggle]');
-  if (menu && toggle) {
-    toggle.addEventListener('click', () => {
-      if (preference.matches || toggle.getAttribute('aria-expanded') !== 'true') return;
-      const animation = menu.animate([{ opacity: 0, transform: 'translateY(-8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 240, easing: ease });
-      active.add(animation);
-      const finish = () => active.delete(animation);
-      animation.addEventListener('finish', finish, { once: true });
-      animation.addEventListener('cancel', finish, { once: true });
-    });
-  }
   preference.addEventListener('change', () => {
     observer?.disconnect();
     active.forEach((animation) => animation.cancel());

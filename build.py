@@ -194,13 +194,14 @@ def header(lang, slug, c):
     nav = ''.join(f'<a href="{s}"{ " aria-current=\"page\"" if slug == s or (s == "services.html" and slug in SERVICE_SLUGS) or (s == "projects.html" and slug == "project-example.html") else ""}>{text(t)}</a>' for s,t in zip(['services.html','projects.html','about.html','contact.html'], c['nav']))
     languages = ''.join(f'<a href="../{l}/{slug}" lang="{l}" hreflang="{l}" aria-label="{COPY[l]["lang_name"]}"{ " aria-current=\"true\"" if l == lang else ""}>{"UA" if l == "uk" else l.upper()}</a>' for l in COPY)
     language_label = {'uk': 'Мова сайту', 'de': 'Sprache', 'en': 'Language'}[lang]
+    close_label = {'uk': 'Закрити меню', 'de': 'Menü schließen', 'en': 'Close menu'}[lang]
     return f'''<a class="skip-link" href="#main">{c['skip']}</a>
 <header class="site-header"><div class="container header-inner">
 <a class="brand" href="index.html" aria-label="BauServiceMD — {c['home']}"><img src="../assets/images/logo.webp" alt="BauServiceMD — Renovierung &amp; Innenausbau" width="260" height="172"></a>
 <nav class="site-nav" id="mobile-menu" data-menu aria-label="{c['menu']}">{nav}</nav>
 <div class="header-actions"><nav class="language-switcher" aria-label="{language_label}">{languages}</nav>{link('contact.html', c['connect'], 'button button-secondary header-contact')}
-<button class="menu-toggle" type="button" data-menu-toggle aria-controls="mobile-menu" aria-expanded="false"><span>{c['menu']}</span><span class="menu-icon" aria-hidden="true"><span></span><span></span></span></button></div>
-</div></header>'''
+<button class="menu-toggle" type="button" data-menu-toggle aria-controls="mobile-drawer" aria-haspopup="dialog" aria-expanded="false"><span>{c['menu']}</span><span class="menu-icon" aria-hidden="true"><span></span><span></span></span></button></div>
+</div><dialog class="mobile-drawer" id="mobile-drawer" data-mobile-drawer aria-label="{text(c['menu'])}"><div class="drawer-top"><a class="brand" href="index.html" aria-label="BauServiceMD — {text(c['home'])}"><img src="../assets/images/logo.webp" alt="BauServiceMD" width="260" height="172"></a><button class="drawer-close" type="button" data-menu-close aria-label="{text(close_label)}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div><nav class="drawer-nav" aria-label="{text(c['menu'])}">{nav}</nav><div class="drawer-languages"><p>{text(language_label)}</p><nav class="language-switcher" aria-label="{text(language_label)}">{languages}</nav></div></dialog></header>'''
 
 def footer(c):
     nav = ''.join(f'<a href="{s}">{text(t)}</a>' for s,t in zip(['services.html','projects.html','about.html','contact.html'],c['nav']))

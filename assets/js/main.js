@@ -3,27 +3,81 @@
   'use strict';
   document.documentElement.classList.add('js');
   const toggle = document.querySelector('[data-menu-toggle]');
-  const menu = document.querySelector('[data-menu]');
-  if (toggle && menu) {
-    const setOpen = (open) => {
-      toggle.setAttribute('aria-expanded', String(open));
-      menu.classList.toggle('is-open', open);
-      menu.setAttribute('data-open', String(open));
+  const panel = document.querySelector('[data-mobile-drawer]');
+  const desktop = window.matchMedia('(min-width: 1024px)');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (toggle && panel && typeof panel.showModal === 'function') {
+    let animation;
+    let closing = false;
+    let scrollY = 0;
+    let bodyStyles;
+    const lockedProperties = ['position', 'top', 'left', 'right', 'width', 'overflow'];
+    const lockScroll = () => {
+      scrollY = window.scrollY;
+      bodyStyles = Object.fromEntries(lockedProperties.map((key) => [key, document.body.style[key]]));
+      Object.assign(document.body.style, { position: 'fixed', top: `-${scrollY}px`, left: '0', right: '0', width: '100%', overflow: 'hidden' });
+      document.documentElement.classList.add('mobile-menu-open');
     };
-    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
-    menu.addEventListener('click', (event) => {
-      if (event.target.closest('a')) setOpen(false);
-    });
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-        setOpen(false);
-        toggle.focus();
+    const unlockScroll = () => {
+      if (!bodyStyles) return;
+      Object.assign(document.body.style, bodyStyles);
+      bodyStyles = null;
+      document.documentElement.classList.remove('mobile-menu-open');
+      const previous = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, scrollY);
+      document.documentElement.style.scrollBehavior = previous;
+    };
+    const finishClose = () => {
+      animation?.cancel();
+      animation = null;
+      if (panel.open) panel.close();
+      toggle.setAttribute('aria-expanded', 'false');
+      closing = false;
+      unlockScroll();
+      if (!desktop.matches) toggle.focus({ preventScroll: true });
+    };
+    const closeMenu = (immediate = false) => {
+      if (!panel.open) return;
+      if (immediate || reduced.matches || typeof panel.animate !== 'function') {
+        finishClose();
+        return;
+      }
+      if (closing) return;
+      closing = true;
+      animation?.cancel();
+      animation = panel.animate([
+        { transform: 'translateX(0)' },
+        { transform: 'translateX(-100%)' }
+      ], { duration: 340, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards' });
+      animation.addEventListener('finish', finishClose, { once: true });
+    };
+    toggle.addEventListener('click', () => {
+      if (desktop.matches || panel.open) return;
+      lockScroll();
+      panel.showModal();
+      toggle.setAttribute('aria-expanded', 'true');
+      if (!reduced.matches && typeof panel.animate === 'function') {
+        animation = panel.animate([
+          { transform: 'translateX(-100%)' },
+          { transform: 'translateX(0)' }
+        ], { duration: 480, easing: 'cubic-bezier(.22, 1, .36, 1)' });
       }
     });
-    document.addEventListener('click', (event) => {
-      if (!event.target.closest('.site-header')) setOpen(false);
+    panel.querySelector('[data-menu-close]')?.addEventListener('click', () => closeMenu());
+    panel.addEventListener('cancel', (event) => { event.preventDefault(); closeMenu(); });
+    panel.addEventListener('click', (event) => { if (event.target.closest('a')) closeMenu(true); });
+    panel.addEventListener('close', () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      unlockScroll();
     });
-    window.matchMedia('(min-width: 1024px)').addEventListener('change', () => setOpen(false));
+    desktop.addEventListener('change', () => { if (desktop.matches) closeMenu(true); });
+    reduced.addEventListener('change', () => {
+      if (!reduced.matches) return;
+      if (closing) finishClose();
+      else animation?.cancel();
+    });
+    window.addEventListener('pagehide', () => closeMenu(true));
   }
 
 
