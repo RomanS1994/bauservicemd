@@ -44,11 +44,11 @@
     if (preference.matches) return;
     const hero = document.querySelector('.hero-copy');
     if (hero) {
-      ['.eyebrow', '.hero-title', '.hero-description', '.hero-actions', '.hero-detail'].forEach((selector, index) => rise(hero.querySelector(selector), index * 90));
-      play(document.querySelector('.hero-media'), [
-        { opacity: 0, clipPath: 'inset(5% 3% 5% 3% round 10px)', transform: 'translateY(12px)' },
-        { opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 10px)', transform: 'translateY(0)' }
-      ], 1050, 160);
+      ['.eyebrow', '.hero-title', '.hero-description', '.hero-actions'].forEach((selector, index) => rise(hero.querySelector(selector), index * 90));
+      play(document.querySelector('.hero-media img'), [
+        { transform: 'scale(1.04)' },
+        { transform: 'scale(1)' }
+      ], 1400);
     } else {
       document.querySelectorAll('.page-hero h1, .page-hero .section-intro').forEach((element, index) => rise(element, index * 100));
     }
