@@ -24,7 +24,7 @@ POLICY = {
 <p class="notice">Speicherdauer der Server-Logfiles: [Noch ergänzen: konkrete Speicherdauer beim Hosting-Anbieter klären]</p></section>
 
 <section aria-labelledby="privacy-3"><h2 id="privacy-3">3. Kontaktaufnahme</h2>
-<p>Wenn Sie mich telefonisch, per E-Mail oder über WhatsApp kontaktieren, verwende ich Ihre Angaben ausschließlich zur Bearbeitung Ihrer Anfrage sowie gegebenenfalls zur Vorbereitung und Durchführung eines Auftrags. Dabei können Ihr Name, Ihre Kontaktdaten, Nachrichten und freiwillig zugesandte Fotos verarbeitet werden.</p>
+<p>Wenn Sie mich telefonisch, per E-Mail, über das Kontaktformular oder über WhatsApp kontaktieren, verwende ich Ihre Angaben ausschließlich zur Bearbeitung Ihrer Anfrage sowie gegebenenfalls zur Vorbereitung und Durchführung eines Auftrags. Dabei können Ihr Name, Ihre Kontaktdaten, Nachrichten und freiwillig zugesandte Fotos verarbeitet werden.</p>
 <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, sofern es um die Anbahnung oder Durchführung eines Vertrags geht. Bei allgemeinen Anfragen erfolgt die Verarbeitung gegebenenfalls auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO.</p></section>
 
 <section aria-labelledby="privacy-4"><h2 id="privacy-4">4. Kontakt über WhatsApp</h2>
@@ -51,7 +51,7 @@ POLICY = {
 
 <section aria-labelledby="privacy-9"><h2 id="privacy-9">9. Cookies und externe Dienste</h2>
 <p>Diese Website setzt keine eigenen Cookies ein und verwendet keine Tracking- oder Analysewerkzeuge. Es werden keine Karten, Videos oder Webfonts von Drittanbietern eingebettet. Die Bilder, Stylesheets und Skripte der Website werden zusammen mit der Website bereitgestellt; für die Schrift verwendet sie die auf Ihrem Gerät verfügbaren Systemschriften.</p>
-<p>Das Kontaktformular erstellt ausschließlich einen E-Mail-Entwurf im Browser beziehungsweise in Ihrem E-Mail-Programm. Es gibt keine serverseitige Formularübermittlung und keine Speicherung der Formulareingaben in localStorage oder vergleichbaren Browserspeichern.</p>
+<p>Beim Absenden des Kontaktformulars werden Ihr Name, die angegebenen Kontaktdaten und Ihre Nachricht über FormSubmit (formsubmit.co) an meine E-Mail-Adresse übermittelt. FormSubmit verarbeitet dabei auch technische Anfragedaten. Laut Dokumentation speichert FormSubmit Formulareingaben für 30 Tage. Weitere Informationen: <a href="https://formsubmit.co/privacy.pdf">Datenschutzhinweise von FormSubmit</a>. Die Website speichert Formulareingaben nicht in localStorage oder vergleichbaren Browserspeichern. Ohne Absenden der Form werden keine Formulardaten an FormSubmit übermittelt.</p>
 <p>WhatsApp und andere verlinkte externe Seiten werden erst durch Ihren Klick geöffnet. Unabhängig davon kann der Hosting-Anbieter GitHub beim Abruf der Website technische Anfragedaten verarbeiten; hierzu gelten die Informationen in Abschnitt 2 und die Datenschutzerklärung des Anbieters.</p></section>
 ''',
     'uk': '''
@@ -69,7 +69,7 @@ POLICY = {
 <section aria-labelledby="privacy-3"><h2 id="privacy-3">3. Звернення</h2>
 <p>Якщо ви звертаєтеся до мене телефоном, електронною поштою або через WhatsApp, я використовую ваші дані виключно для розгляду звернення та, за потреби, підготовки й виконання замовлення. При цьому можуть оброблятися ваше ім’я, контактні дані, повідомлення та добровільно надіслані фотографії.</p>
 <p>Правова підстава — стаття 6, пункт 1, літера b GDPR, якщо йдеться про дії перед укладенням договору або його виконання. У випадку загальних звернень обробка за потреби здійснюється на підставі статті 6, пункту 1, літери f GDPR.</p>
-<p>Форма на цьому сайті обробляє введені дані лише у вашому браузері, щоб відкрити чернетку листа у вашій поштовій програмі через посилання mailto. Вона не надсилає звернення на сервер сайту й не зберігає введені дані в локальному сховищі браузера. Ви самостійно вирішуєте, чи надсилати чернетку зі своєї поштової програми.</p></section>
+<p>Після натискання кнопки надсилання ім’я, контактні дані й текст звернення передаються через FormSubmit (formsubmit.co) на мою електронну пошту. FormSubmit також обробляє технічні дані запиту. За документацією сервісу, дані форм зберігаються протягом 30 днів. Детальніше — у <a href="https://formsubmit.co/privacy.pdf">політиці конфіденційності FormSubmit</a>. Без надсилання форми дані до цього сервісу не передаються. Сайт не зберігає введені дані в локальному сховищі браузера.</p></section>
 
 <section aria-labelledby="privacy-4"><h2 id="privacy-4">4. Зв’язок через WhatsApp</h2>
 <p>Натискаючи на посилання WhatsApp, ви залишаєте цей сайт і відкриваєте сторонній сервіс. Використання WhatsApp є добровільним. Натомість ви можете зв’язатися зі мною телефоном або електронною поштою.</p>
@@ -93,7 +93,7 @@ POLICY = {
 
 <section aria-labelledby="privacy-9"><h2 id="privacy-9">9. Cookies і зовнішні сервіси</h2>
 <p>Цей сайт не встановлює власних cookies і не використовує засобів відстеження або аналітики. На ньому немає вбудованих карт, відео чи вебшрифтів сторонніх постачальників. Зображення, таблиці стилів і скрипти надаються разом із сайтом; для тексту використовуються системні шрифти, доступні на вашому пристрої.</p>
-<p>Контактна форма лише створює чернетку листа у браузері або вашій поштовій програмі. Серверного надсилання форми й зберігання введених даних у localStorage чи подібних сховищах браузера немає.</p>
+<p>Для надсилання контактної форми використовується зовнішній сервіс FormSubmit. Передавання введених і технічних даних відбувається після надсилання форми, як описано в розділі 3. Введені дані не зберігаються сайтом у localStorage чи подібних сховищах браузера.</p>
 <p>WhatsApp та інші зовнішні сторінки відкриваються лише після натискання вами відповідного посилання. Незалежно від цього постачальник хостингу GitHub може обробляти технічні дані запитів під час відкриття сайту; щодо цього діє інформація з розділу 2 та політика конфіденційності постачальника.</p></section>
 ''',
     'en': '''
@@ -111,7 +111,7 @@ POLICY = {
 <section aria-labelledby="privacy-3"><h2 id="privacy-3">3. Contact enquiries</h2>
 <p>If you contact me by phone, email or WhatsApp, I use your details exclusively to handle your enquiry and, where applicable, to prepare and carry out an order. This may involve processing your name, contact details, messages and voluntarily provided photographs.</p>
 <p>The legal basis is Article 6(1)(b) GDPR where the processing concerns steps before entering into a contract or performance of a contract. For general enquiries, processing may be based on Article 6(1)(f) GDPR where applicable.</p>
-<p>The form on this website processes your entries only in your browser to open an email draft in your email application using a mailto link. It does not submit an enquiry to a website server or save your entries in local browser storage. You decide whether to send the draft from your email application.</p></section>
+<p>When you submit the contact form, your name, contact details and message are forwarded to my email address through FormSubmit (formsubmit.co). FormSubmit also processes technical request data. According to its documentation, form submissions are retained for 30 days. See the <a href="https://formsubmit.co/privacy.pdf">FormSubmit privacy policy</a>. No form entries are sent to this service before submission. The website does not save entries in local browser storage.</p></section>
 
 <section aria-labelledby="privacy-4"><h2 id="privacy-4">4. Contact via WhatsApp</h2>
 <p>Clicking the WhatsApp link takes you away from this website and opens an external service. Using WhatsApp is voluntary. You can contact me by phone or email instead.</p>
@@ -135,7 +135,7 @@ POLICY = {
 
 <section aria-labelledby="privacy-9"><h2 id="privacy-9">9. Cookies and external services</h2>
 <p>This website does not set its own cookies or use tracking or analytics tools. It does not embed third-party maps, videos or web fonts. The website’s images, stylesheets and scripts are served together with the website, and text uses system fonts available on your device.</p>
-<p>The contact form only creates an email draft in your browser or email application. There is no server-side form submission and no storage of form entries in localStorage or similar browser storage.</p>
+<p>The contact form uses the external FormSubmit service. Submitted entries and technical request data are transmitted when you submit the form, as described in section 3. The website does not save entries in localStorage or similar browser storage.</p>
 <p>WhatsApp and other linked external pages open only when you click their links. Independently of this, the hosting provider GitHub may process technical request data when the website is accessed; see section 2 and the provider’s privacy statement.</p></section>
 ''',
 }

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """Build the plain-HTML BauServiceMD website. No third-party dependencies."""
+import hashlib
+import re
 from pathlib import Path
 from html import escape as esc
 from privacy_content import POLICY, TITLES
@@ -106,6 +108,15 @@ for lang, values in {
         COPY[lang][key] = value
 
 
+for lang, values in {
+    'uk': ('Напишіть мені', 'Надіслати заявку', 'Після натискання дані передаються через FormSubmit на мою пошту. Поштова програма не потрібна.', 'Надсилання…', 'Ваше звернення прийнято. Дякую! Зв’яжуся з вами за вказаним контактом.', 'Не вдалося підтвердити надсилання. Ваш текст збережено в полях — спробуйте ще раз або напишіть у WhatsApp чи на email.', 'Надсилання форми ще потребує підтвердження власником пошти. Будь ласка, зв’яжіться зі мною через WhatsApp, email або телефоном.'),
+    'de': ('Schreiben Sie mir', 'Anfrage senden', 'Beim Absenden werden Ihre Angaben über FormSubmit an meine E-Mail-Adresse übermittelt. Ein E-Mail-Programm ist nicht erforderlich.', 'Wird gesendet…', 'Ihre Anfrage wurde angenommen. Vielen Dank! Ich melde mich über die angegebenen Kontaktdaten.', 'Der Versand konnte nicht bestätigt werden. Ihre Angaben bleiben in den Feldern erhalten. Versuchen Sie es erneut oder kontaktieren Sie mich per WhatsApp oder E-Mail.', 'Die Formularfunktion muss noch vom Inhaber der E-Mail-Adresse bestätigt werden. Bitte kontaktieren Sie mich per WhatsApp, E-Mail oder Telefon.'),
+    'en': ('Send me a message', 'Send enquiry', 'When you submit, your details are forwarded to my email via FormSubmit. No email application is needed.', 'Sending…', 'Your enquiry has been accepted. Thank you! I will reply using the contact details you provided.', 'We could not confirm submission. Your entries remain in the fields. Please try again or contact me via WhatsApp or email.', 'The form still needs to be activated by the email address owner. Please contact me via WhatsApp, email or phone.'),
+}.items():
+    for key, value in zip(('form_title', 'submit', 'form_note', 'form_loading', 'form_success', 'form_error', 'form_activation'), values):
+        COPY[lang][key] = value
+
+
 # Presentation copy uses unpunctuated labels and short editorial blurbs.
 # Keep natural paragraph punctuation and the supplied legal policy unchanged.
 def presentation_label(value):
@@ -188,11 +199,12 @@ def footer(c):
 </div><div class="container legal-notice"><p>{text(c['legal_notice'])}</p></div></footer>'''
 
 def form(c):
-    return f'''<form class="contact-form" data-contact-form data-subject="{text(c['subject'])}" data-fallback="{text(c['form_status'])}" action="mailto:{EMAIL}" method="post" enctype="text/plain">
+    return f'''<form class="contact-form" data-contact-form data-subject="{text(c['subject'])}" data-loading="{text(c['form_loading'])}" data-success="{text(c['form_success'])}" data-error="{text(c['form_error'])}" data-activation="{text(c['form_activation'])}" action="https://formsubmit.co/{EMAIL}" method="post">
+<input type="hidden" name="_subject" value="{text(c['subject'])}"><input type="hidden" name="_template" value="table"><label class="form-honeypot" for="contact-website" aria-hidden="true">Website</label><input id="contact-website" class="form-honeypot" name="_honey" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
 <div class="form-row"><div class="form-field"><label for="contact-name">{text(c['name'])} <span aria-hidden="true">*</span></label><input id="contact-name" name="name" type="text" autocomplete="name" maxlength="120" required placeholder="{text(c['name_placeholder'])}"></div>
 <div class="form-field"><label for="contact-reply">{text(c['contact'])} <span aria-hidden="true">*</span></label><input id="contact-reply" name="contact" type="text" autocomplete="email" maxlength="180" required placeholder="{text(c['contact_placeholder'])}"></div></div>
 <div class="form-field"><label for="contact-message">{text(c['message'])} <span aria-hidden="true">*</span></label><textarea id="contact-message" name="message" rows="5" maxlength="4000" required placeholder="{text(c['message_placeholder'])}"></textarea></div>
-<button class="button button-primary" type="submit">{text(c['submit'])} {arrow()}</button>
+<button class="button button-primary" type="submit"><span data-submit-label>{text(c['submit'])}</span><span class="form-spinner" aria-hidden="true"></span> {arrow()}</button>
 <p class="form-note">{text(c['form_note'])}</p><a class="text-link" href="privacy.html">{text(c['privacy_link'])}</a><p class="form-status" data-form-status role="status" aria-live="polite"></p></form>'''
 
 def contact_section(c, full=False):
@@ -264,9 +276,16 @@ def document(lang, slug):
     c={**COPY[lang], 'section_numbers': slug == 'index.html'}
     body,title,description=page(lang,slug,c)
     alternates=''.join(f'<link rel="alternate" hreflang="{l}" href="{BASE}/{l}/{slug}">' for l in COPY)
-    return f'''<!doctype html>
-<html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>{text(title_plain(title))} | BauServiceMD</title><meta name="description" content="{text(description)}"><link rel="canonical" href="{BASE}/{lang}/{slug}">{alternates}<link rel="alternate" hreflang="x-default" href="{BASE}/uk/{slug}"><meta property="og:type" content="website"><meta property="og:site_name" content="BauServiceMD"><meta property="og:title" content="{text(title_plain(title))} | BauServiceMD"><meta property="og:description" content="{text(description)}"><meta property="og:url" content="{BASE}/{lang}/{slug}"><meta property="og:image" content="{BASE}/assets/images/hero.webp"><link rel="icon" href="../assets/images/favicon.png" type="image/png"><link rel="stylesheet" href="../assets/css/base.css"><link rel="stylesheet" href="../assets/css/layout.css"><link rel="stylesheet" href="../assets/css/components.css"><link rel="stylesheet" href="../assets/css/pages.css"><link rel="stylesheet" href="../assets/css/motion.css"><script src="../assets/js/main.js" defer></script><script src="../assets/js/motion.js" defer></script></head><body>{header(lang,slug,c)}<main id="main">{body}</main>{gallery_dialog(c) if slug in ("index.html", "projects.html") else ""}{footer(c)}</body></html>
+    markup = f'''<!doctype html>
+<html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>{text(title_plain(title))} | BauServiceMD</title><meta name="description" content="{text(description)}"><link rel="canonical" href="{BASE}/{lang}/{slug}">{alternates}<link rel="alternate" hreflang="x-default" href="{BASE}/uk/{slug}"><meta property="og:type" content="website"><meta property="og:site_name" content="BauServiceMD"><meta property="og:title" content="{text(title_plain(title))} | BauServiceMD"><meta property="og:description" content="{text(description)}"><meta property="og:url" content="{BASE}/{lang}/{slug}"><meta property="og:image" content="{BASE}/assets/images/hero.webp"><link rel="icon" href="../assets/images/favicon.png" type="image/png"><link rel="stylesheet" href="../assets/css/base.css"><link rel="stylesheet" href="../assets/css/layout.css"><link rel="stylesheet" href="../assets/css/components.css"><link rel="stylesheet" href="../assets/css/pages.css"><link rel="stylesheet" href="../assets/css/motion.css"><script src="../assets/js/main.js" defer></script><script src="../assets/js/contact.js" defer></script><script src="../assets/js/motion.js" defer></script></head><body>{header(lang,slug,c)}<main id="main">{body}</main>{gallery_dialog(c) if slug in ("index.html", "projects.html") else ""}{footer(c)}</body></html>
 '''
+
+    # Request fresh assets after updates, even if an earlier version is cached.
+    def version_asset(match):
+        path = match.group(1)
+        digest = hashlib.sha256((ROOT / path).read_bytes()).hexdigest()[:12]
+        return f'../{path}?v={digest}'
+    return re.sub(r'\.\./(assets/(?:css|js)/[^"?]+\.(?:css|js))', version_asset, markup)
 
 def build():
     for lang in COPY:

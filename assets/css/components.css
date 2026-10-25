@@ -95,3 +95,13 @@
 .gallery-arrow-prev { transform: rotate(-135deg); }
 .gallery-arrow-next { transform: rotate(45deg); }
 @media (max-width: 767px) { .gallery-dialog { padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); } }
+
+.form-honeypot { display: none !important; }
+.form-spinner { display: none; width: 18px; height: 18px; flex: 0 0 auto; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; }
+.contact-form[aria-busy="true"] .form-spinner { display: inline-block; animation: form-spin .8s linear infinite; }
+.contact-form[aria-busy="true"] .icon-arrow { display: none; }
+.contact-form .button:disabled { cursor: wait; opacity: .8; transform: none; }
+.form-status[data-state="error"] { border-left-color: #a42b23; }
+.form-status[data-state="success"] { border-left-color: #376540; }
+@keyframes form-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .contact-form[aria-busy="true"] .form-spinner { animation: none; } }
