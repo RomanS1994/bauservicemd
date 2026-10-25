@@ -197,16 +197,16 @@ def header(lang, slug, c):
     close_label = {'uk': 'Закрити меню', 'de': 'Menü schließen', 'en': 'Close menu'}[lang]
     return f'''<a class="skip-link" href="#main">{c['skip']}</a>
 <header class="site-header"><div class="container header-inner">
-<a class="brand" href="index.html" aria-label="BauServiceMD — {c['home']}"><img src="../assets/images/logo.webp" alt="BauServiceMD — Renovierung &amp; Innenausbau" width="260" height="172"></a>
+<a class="brand" href="index.html" aria-label="BauServiceMD — {c['home']}"><img src="../assets/images/logo-transparent.webp" alt="BauServiceMD — Renovierung &amp; Innenausbau" width="260" height="172"></a>
 <nav class="site-nav" id="mobile-menu" data-menu aria-label="{c['menu']}">{nav}</nav>
 <div class="header-actions"><nav class="language-switcher" aria-label="{language_label}">{languages}</nav>{link('contact.html', c['connect'], 'button button-secondary header-contact')}
 <button class="menu-toggle" type="button" data-menu-toggle aria-controls="mobile-drawer" aria-haspopup="dialog" aria-expanded="false"><span>{c['menu']}</span><span class="menu-icon" aria-hidden="true"><span></span><span></span></span></button></div>
-</div><dialog class="mobile-drawer" id="mobile-drawer" data-mobile-drawer aria-label="{text(c['menu'])}"><div class="drawer-top"><a class="brand" href="index.html" aria-label="BauServiceMD — {text(c['home'])}"><img src="../assets/images/logo.webp" alt="BauServiceMD" width="260" height="172"></a><button class="drawer-close" type="button" data-menu-close aria-label="{text(close_label)}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div><nav class="drawer-nav" aria-label="{text(c['menu'])}">{nav}</nav><div class="drawer-languages"><p>{text(language_label)}</p><nav class="language-switcher" aria-label="{text(language_label)}">{languages}</nav></div></dialog></header>'''
+</div><dialog class="mobile-drawer" id="mobile-drawer" data-mobile-drawer aria-label="{text(c['menu'])}"><div class="drawer-top"><a class="brand" href="index.html" aria-label="BauServiceMD — {text(c['home'])}"><img src="../assets/images/logo-transparent.webp" alt="BauServiceMD" width="260" height="172"></a><button class="drawer-close" type="button" data-menu-close aria-label="{text(close_label)}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div><nav class="drawer-nav" aria-label="{text(c['menu'])}">{nav}</nav><div class="drawer-languages"><p>{text(language_label)}</p><nav class="language-switcher" aria-label="{text(language_label)}">{languages}</nav></div></dialog></header>'''
 
 def footer(c):
     nav = ''.join(f'<a href="{s}">{text(t)}</a>' for s,t in zip(['services.html','projects.html','about.html','contact.html'],c['nav']))
     return f'''<footer class="site-footer"><div class="container footer-grid">
-<div><a class="brand footer-brand" href="index.html"><img src="../assets/images/logo.webp" alt="BauServiceMD" width="260" height="172" loading="lazy"></a><p>{text(c['footer_line'])}</p></div>
+<div><a class="brand footer-brand" href="index.html"><img src="../assets/images/logo-transparent.webp" alt="BauServiceMD" width="260" height="172" loading="lazy"></a><p>{text(c['footer_line'])}</p></div>
 <nav class="footer-links" aria-label="{c['menu']}">{nav}</nav>
 <div class="footer-contact"><a href="tel:+4915778582592">{PHONE}</a><a href="mailto:{EMAIL}">{EMAIL}</a><p>{text(c['region'])}</p></div>
 <div class="footer-legal"><a href="impressum.html">{text(c['footer_impressum'])}</a><a href="privacy.html">{text(c['footer_privacy'])}</a></div>
