@@ -10,14 +10,18 @@
   let progress;
   let frame = 0;
   const ease = 'cubic-bezier(.22, 1, .36, 1)';
-  const play = (element, frames, duration = 750, delay = 0, easing = ease) => {
-    if (!element || preference.matches || seen.has(element)) return;
-    seen.add(element);
+  const animateMotion = (element, frames, duration = 750, delay = 0, easing = ease) => {
+    if (!element || preference.matches) return;
     const animation = element.animate(frames, { duration, delay, easing, fill: 'backwards' });
     active.add(animation);
     const finish = () => active.delete(animation);
     animation.addEventListener('finish', finish, { once: true });
     animation.addEventListener('cancel', finish, { once: true });
+  };
+  const play = (element, frames, duration = 750, delay = 0, easing = ease) => {
+    if (!element || preference.matches || seen.has(element)) return;
+    seen.add(element);
+    animateMotion(element, frames, duration, delay, easing);
   };
   const rise = (element, delay = 0) => play(element, [
     { opacity: 0, transform: 'translateY(24px)' },
@@ -69,11 +73,16 @@
           if (!isIntersecting) return;
           observer.unobserve(target);
           target.classList.add('is-in-view');
-          const staggered = target.matches('.service-row, .step, .preparation-list li');
+          const staggered = target.matches('.service-row, .step, .preparation-list li, .faq-list > details, .footer-grid > *');
           const index = staggered ? Array.from(target.parentElement.children).indexOf(target) : 0;
           const delay = Math.min(index, 3) * 75;
           if (target.matches('figure')) {
             revealImage(target.querySelector('img'));
+          } else if (target.matches('h2')) {
+            play(target, [
+              { opacity: 0, clipPath: 'inset(0 0 100% 0)', transform: 'translateY(14px)' },
+              { opacity: 1, clipPath: 'inset(0)', transform: 'translateY(0)' }
+            ], 950);
           } else if (target.matches('.eyebrow')) {
             play(target.querySelector('span'), [
               { opacity: .2, transform: 'translateY(10px)' },
@@ -82,11 +91,16 @@
           } else {
             rise(target, delay);
             if (target.matches('.project-card')) revealImage(target.querySelector('img'), 90);
+            if (target.matches('.step')) play(target.querySelector('.step-number'), [
+              { opacity: .3, transform: 'translateY(8px) scale(.92)' },
+              { opacity: 1, transform: 'translateY(0) scale(1)' }
+            ], 850, delay + 80);
           }
         });
       }, { threshold: .08, rootMargin: '0px 0px -28px 0px' });
       document.querySelectorAll('.services-intro, .service-row, .section-top, .project-card, .about-band-grid > *, .step, .preparation-grid > div, .preparation-list li, .faq-layout > div, .contact-copy, .contact-form, .services-intro figure, .preparation-grid figure, .page-grid figure, .service-detail-grid figure, .example-hero').forEach((element) => observer.observe(element));
       document.querySelectorAll('.section .section-label').forEach((element) => observer.observe(element));
+      document.querySelectorAll('.section h2, .faq-list > details, .footer-grid > *').forEach((element) => observer.observe(element));
     }
     if (!progress) {
       progress = document.createElement('div');
@@ -113,6 +127,24 @@
       animation.addEventListener('finish', finish, { once: true });
       animation.addEventListener('cancel', finish, { once: true });
     });
+  });
+  document.querySelectorAll('.faq-more').forEach((more) => {
+    more.addEventListener('toggle', () => {
+      requestProgress();
+      if (!more.open) return;
+      animateMotion(more.querySelector('.faq-list'), [
+        { opacity: .4 },
+        { opacity: 1 }
+      ], 450);
+    });
+  });
+  const galleryPhoto = document.querySelector('[data-gallery-photo]');
+  galleryPhoto?.addEventListener('load', () => {
+    if (!galleryPhoto.closest('dialog')?.open) return;
+    animateMotion(galleryPhoto, [
+      { opacity: .5, transform: 'scale(.985)' },
+      { opacity: 1, transform: 'scale(1)' }
+    ], 400);
   });
   const menu = document.querySelector('[data-menu]');
   const toggle = document.querySelector('[data-menu-toggle]');
