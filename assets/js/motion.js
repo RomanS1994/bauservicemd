@@ -24,13 +24,13 @@
     animateMotion(element, frames, duration, delay, easing);
   };
   const rise = (element, delay = 0) => play(element, [
-    { opacity: 0, transform: 'translateY(24px)' },
-    { opacity: 1, transform: 'translateY(0)' }
-  ], 750, delay);
+    { transform: 'translateY(14px)' },
+    { transform: 'translateY(0)' }
+  ], 1100, delay);
   const revealImage = (image, delay = 0) => play(image, [
-    { clipPath: 'inset(0 0 14% 0 round 10px)', transform: 'scale(1.045)' },
-    { clipPath: 'inset(0 0 0% 0 round 10px)', transform: 'scale(1)' }
-  ], 1000, delay);
+    { transform: 'scale(1.025)' },
+    { transform: 'scale(1)' }
+  ], 1500, delay);
 
   const updateProgress = () => {
     frame = 0;
@@ -51,8 +51,8 @@
       const heroEase = 'cubic-bezier(.25, .1, .25, 1)';
       ['.eyebrow', '.hero-title', '.hero-description', '.hero-actions'].forEach((selector, index) => {
         play(hero.querySelector(selector), [
-          { opacity: 0, transform: 'translateY(12px)' },
-          { opacity: 1, transform: 'translateY(0)' }
+          { transform: 'translateY(12px)' },
+          { transform: 'translateY(0)' }
         ], 1200, index * 100, heroEase);
       });
       const photo = document.querySelector('.hero-media img');
@@ -78,29 +78,26 @@
           const delay = Math.min(index, 3) * 75;
           if (target.matches('figure')) {
             revealImage(target.querySelector('img'));
-          } else if (target.matches('h2')) {
-            play(target, [
-              { opacity: 0, clipPath: 'inset(0 0 100% 0)', transform: 'translateY(14px)' },
-              { opacity: 1, clipPath: 'inset(0)', transform: 'translateY(0)' }
-            ], 950);
-          } else if (target.matches('.eyebrow')) {
-            play(target.querySelector('span'), [
-              { opacity: .2, transform: 'translateY(10px)' },
-              { opacity: 1, transform: 'translateY(0)' }
-            ], 800);
           } else {
             rise(target, delay);
             if (target.matches('.project-card')) revealImage(target.querySelector('img'), 90);
             if (target.matches('.step')) play(target.querySelector('.step-number'), [
-              { opacity: .3, transform: 'translateY(8px) scale(.92)' },
-              { opacity: 1, transform: 'translateY(0) scale(1)' }
+              { transform: 'translateY(8px) scale(.96)' },
+              { transform: 'translateY(0) scale(1)' }
             ], 850, delay + 80);
           }
         });
       }, { threshold: .08, rootMargin: '0px 0px -28px 0px' });
-      document.querySelectorAll('.services-intro, .service-row, .section-top, .project-card, .about-band-grid > *, .step, .preparation-grid > div, .preparation-list li, .faq-layout > div, .contact-copy, .contact-form, .services-intro figure, .preparation-grid figure, .page-grid figure, .service-detail-grid figure, .example-hero').forEach((element) => observer.observe(element));
-      document.querySelectorAll('.section .section-label').forEach((element) => observer.observe(element));
-      document.querySelectorAll('.section h2, .faq-list > details, .footer-grid > *').forEach((element) => observer.observe(element));
+      // Animate each outer unit once: nested targets otherwise move twice.
+      // Keep painted content visible when the observer starts, even on slow loads.
+      const targets = Array.from(document.querySelectorAll('.services-intro, .service-row, .section-top, .project-card, .about-band-grid > *, .step, .preparation-grid > div, .preparation-list li, .faq-layout > div, .contact-copy, .contact-form, .services-intro figure, .preparation-grid figure, .page-grid figure, .service-detail-grid figure, .example-hero, .section .section-label, .section h2, .faq-list > details, .footer-grid > *'));
+      const units = new Set(targets);
+      targets.forEach((element) => {
+        for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+          if (units.has(parent)) return;
+        }
+        observer.observe(element);
+      });
     }
     if (!progress) {
       progress = document.createElement('div');
@@ -121,7 +118,7 @@
       if (!details.open || preference.matches) return;
       const content = details.querySelector('p');
       if (!content) return;
-      const animation = content.animate([{ opacity: 0, transform: 'translateY(-6px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 260, easing: ease });
+      const animation = content.animate([{ transform: 'translateY(-4px)' }, { transform: 'translateY(0)' }], { duration: 450, easing: ease });
       active.add(animation);
       const finish = () => active.delete(animation);
       animation.addEventListener('finish', finish, { once: true });
@@ -133,8 +130,8 @@
       requestProgress();
       if (!more.open) return;
       animateMotion(more.querySelector('.faq-list'), [
-        { opacity: .4 },
-        { opacity: 1 }
+        { transform: 'translateY(6px)' },
+        { transform: 'translateY(0)' }
       ], 450);
     });
   });
