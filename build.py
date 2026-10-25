@@ -196,7 +196,7 @@ def footer(c):
 <nav class="footer-links" aria-label="{c['menu']}">{nav}</nav>
 <div class="footer-contact"><a href="tel:+4915778582592">{PHONE}</a><a href="mailto:{EMAIL}">{EMAIL}</a><p>{text(c['region'])}</p></div>
 <div class="footer-legal"><a href="impressum.html">Impressum</a><a href="privacy.html">Datenschutzerklärung</a></div>
-</div><div class="container legal-notice"><p>{text(c['legal_notice'])}</p></div></footer>'''
+</div></footer>'''
 
 def form(c):
     return f'''<form class="contact-form" data-contact-form data-subject="{text(c['subject'])}" data-loading="{text(c['form_loading'])}" data-success="{text(c['form_success'])}" data-error="{text(c['form_error'])}" data-activation="{text(c['form_activation'])}" action="https://formsubmit.co/{EMAIL}" method="post">
