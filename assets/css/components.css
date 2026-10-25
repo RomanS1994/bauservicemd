@@ -114,3 +114,5 @@
 .faq-less-label, .faq-more[open] > summary .faq-more-label { display: none; }
 .faq-more[open] > summary .faq-less-label { display: inline; }
 .faq-more > .faq-list { margin-top: 18px; }
+
+.icon-contact { display: inline-block; width: 22px; height: 22px; flex: 0 0 22px; vertical-align: middle; pointer-events: none; }
