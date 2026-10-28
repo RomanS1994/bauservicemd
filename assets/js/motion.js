@@ -8,6 +8,72 @@
   let observer;
   let progress;
   let frame = 0;
+  const photoSeen = new WeakSet();
+  const photoJobs = new Map();
+  let photoObserver;
+  let heroAttempted = false;
+  const settlePhoto = (wrapper) => {
+    const timer = photoJobs.get(wrapper);
+    if (timer) clearTimeout(timer);
+    photoJobs.delete(wrapper);
+    wrapper.classList.remove('photo-reveal-armed', 'photo-reveal-running', 'is-preparing');
+    wrapper.classList.add('photo-reveal-done');
+  };
+  const revealHeroWhenReady = () => {
+    if (preference.matches || heroAttempted) return;
+    heroAttempted = true;
+    const hero = document.querySelector('.hero-background');
+    const image = hero?.querySelector('.hero-media img');
+    if (!hero || !image) return;
+    // A cached/painted picture must never be covered again by a delayed decode.
+    if (image.complete || image.naturalWidth > 0) return;
+    hero.classList.add('is-preparing');
+    photoJobs.set(hero, setTimeout(() => settlePhoto(hero), 3500));
+    const reveal = () => {
+      if (!hero.classList.contains('is-preparing') || preference.matches) return;
+      if (!image.naturalWidth) { settlePhoto(hero); return; }
+      hero.classList.add('is-ready');
+      clearTimeout(photoJobs.get(hero));
+      photoJobs.set(hero, setTimeout(() => settlePhoto(hero), 1600));
+    };
+    image.addEventListener('load', reveal, { once: true });
+    image.addEventListener('error', () => settlePhoto(hero), { once: true });
+  };
+  const startPhotos = () => {
+    if (!('IntersectionObserver' in window)) return;
+    photoObserver = new IntersectionObserver(entries => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (!isIntersecting) return;
+        photoObserver.unobserve(target);
+        const image = target.querySelector('img');
+        if (!image) { settlePhoto(target); return; }
+        const reveal = () => {
+          if (preference.matches || !target.classList.contains('photo-reveal-armed') || target.classList.contains('photo-reveal-running')) return;
+          if (!image.naturalWidth) { settlePhoto(target); return; }
+          target.classList.add('photo-reveal-running');
+          clearTimeout(photoJobs.get(target));
+          photoJobs.set(target, setTimeout(() => settlePhoto(target), 1500));
+        };
+        if (image.complete) reveal();
+        else {
+          photoJobs.set(target, setTimeout(() => settlePhoto(target), 2500));
+          image.addEventListener('load', reveal, { once: true });
+          image.addEventListener('error', () => settlePhoto(target), { once: true });
+        }
+      });
+    }, { threshold: .08 });
+    document.querySelectorAll('[data-photo-reveal]').forEach(wrapper => {
+      if (photoSeen.has(wrapper)) return;
+      photoSeen.add(wrapper);
+      // Only cover images before they enter the viewport, never after first paint.
+      if (wrapper.getBoundingClientRect().top < window.innerHeight + 24) {
+        settlePhoto(wrapper);
+        return;
+      }
+      wrapper.classList.add('photo-reveal-armed');
+      photoObserver.observe(wrapper);
+    });
+  };
   const move = (element, offset = 18, delay = 0) => {
     if (!element || preference.matches || typeof element.animate !== 'function') return;
     // Never promote a photograph, or one of its ancestors, to an animated layer.
@@ -33,6 +99,8 @@
   };
   const start = () => {
     if (preference.matches) return;
+    revealHeroWhenReady();
+    startPhotos();
     if ('IntersectionObserver' in window) {
       observer = new IntersectionObserver((entries) => {
         entries.forEach(({ target, isIntersecting }) => {
@@ -78,6 +146,9 @@
   document.querySelectorAll('.faq-more').forEach(more => more.addEventListener('toggle', requestProgress));
   preference.addEventListener('change', () => {
     observer?.disconnect();
+    photoObserver?.disconnect();
+    Array.from(photoJobs.keys()).forEach(settlePhoto);
+    document.querySelectorAll('[data-photo-reveal].photo-reveal-armed').forEach(settlePhoto);
     active.forEach(animation => animation.cancel());
     active.clear();
     if (frame) cancelAnimationFrame(frame);

@@ -45,9 +45,10 @@
       }
       if (closing) return;
       closing = true;
+      const currentTransform = getComputedStyle(panel).transform;
       animation?.cancel();
       animation = panel.animate([
-        { transform: 'translateX(0)' },
+        { transform: currentTransform === 'none' ? 'translateX(0)' : currentTransform },
         { transform: 'translateX(-100%)' }
       ], { duration: 600, easing: 'cubic-bezier(.65, 0, .35, 1)', fill: 'forwards' });
       animation.addEventListener('finish', finishClose, { once: true });
@@ -90,44 +91,103 @@
   const links = [...document.querySelectorAll('[data-gallery-image]')];
   const photos = links.filter((link, index) => links.findIndex((item) => item.href === link.href) === index);
   const image = dialog.querySelector('[data-gallery-photo]');
+  if (!photos.length || !image) return;
   let current = 0;
+  let requested = 0;
+  let requestVersion = 0;
   let opener;
   let previousOverflow;
-  const show = (index) => {
-    current = (index + photos.length) % photos.length;
-    const photo = photos[current];
-    image.src = photo.href;
-    image.alt = photo.dataset.caption;
-    dialog.querySelector('[data-gallery-caption]').textContent = photo.dataset.caption;
-    dialog.querySelector('[data-gallery-counter]').textContent = `${current + 1} / ${photos.length}`;
+  const counter = dialog.querySelector('[data-gallery-counter]');
+  const caption = dialog.querySelector('[data-gallery-caption]');
+  const loadError = {
+    uk: 'Не вдалося завантажити фото. Спробуйте ще раз.',
+    de: 'Das Foto konnte nicht geladen werden. Bitte erneut versuchen.',
+    en: 'The photo could not be loaded. Please try again.'
+  }[document.documentElement.lang] || 'The photo could not be loaded. Please try again.';
+  const show = async (index) => {
+    requested = (index + photos.length) % photos.length;
+    const next = requested;
+    const photo = photos[next];
+    const version = ++requestVersion;
+    dialog.setAttribute('aria-busy', 'true');
+    // Keep the previous photograph painted until its replacement is decoded.
+    const candidate = new Image();
+    try {
+      if (typeof candidate.decode === 'function') {
+        candidate.src = photo.href;
+        await candidate.decode();
+      } else {
+        await new Promise((resolve, reject) => {
+          candidate.onload = resolve;
+          candidate.onerror = reject;
+          candidate.src = photo.href;
+        });
+      }
+      if (version !== requestVersion) return null;
+      image.src = candidate.src;
+      image.alt = photo.dataset.caption;
+      caption.textContent = photo.dataset.caption;
+      current = next;
+      counter.textContent = `${current + 1} / ${photos.length}`;
+      return true;
+    } catch {
+      if (version !== requestVersion) return null;
+      if (version === requestVersion) {
+        requested = current;
+        counter.textContent = loadError;
+      }
+      return false;
+    } finally {
+      if (version === requestVersion) dialog.removeAttribute('aria-busy');
+    }
   };
-  links.forEach((link) => link.addEventListener('click', (event) => {
+  links.forEach((link) => link.addEventListener('click', async (event) => {
     if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0) return;
     event.preventDefault();
     opener = link;
-    show(photos.findIndex((photo) => photo.href === link.href));
+    const loaded = await show(photos.findIndex((photo) => photo.href === link.href));
+    if (loaded === null) return;
+    if (!loaded) {
+      // Native links retain a useful fallback if the first image cannot decode.
+      if (!dialog.open && opener === link && !dialog.hasAttribute('aria-busy')) window.location.assign(link.href);
+      return;
+    }
+    if (dialog.open) return;
     previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     dialog.showModal();
   }));
   dialog.querySelector('[data-gallery-close]').addEventListener('click', () => dialog.close());
-  dialog.querySelector('[data-gallery-prev]').addEventListener('click', () => show(current - 1));
-  dialog.querySelector('[data-gallery-next]').addEventListener('click', () => show(current + 1));
+  dialog.querySelector('[data-gallery-prev]').addEventListener('click', () => show(requested - 1));
+  dialog.querySelector('[data-gallery-next]').addEventListener('click', () => show(requested + 1));
   dialog.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
       event.preventDefault();
-      show(current + (event.key === 'ArrowLeft' ? -1 : 1));
+      show(requested + (event.key === 'ArrowLeft' ? -1 : 1));
     }
   });
   dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
   dialog.addEventListener('close', () => {
+    ++requestVersion;
+    requested = current;
+    dialog.removeAttribute('aria-busy');
     document.body.style.overflow = previousOverflow || '';
-    opener?.focus();
+    opener?.focus({ preventScroll: true });
+  });
+  window.addEventListener('pagehide', () => {
+    ++requestVersion;
+    dialog.removeAttribute('aria-busy');
+    if (dialog.open) dialog.close();
   });
   let touchX;
-  image.addEventListener('touchstart', (event) => { touchX = event.changedTouches[0].clientX; }, { passive: true });
+  let touchY;
+  image.addEventListener('touchstart', (event) => {
+    touchX = event.changedTouches[0].clientX;
+    touchY = event.changedTouches[0].clientY;
+  }, { passive: true });
   image.addEventListener('touchend', (event) => {
     const delta = event.changedTouches[0].clientX - touchX;
-    if (Math.abs(delta) > 55) show(current + (delta < 0 ? 1 : -1));
+    const vertical = event.changedTouches[0].clientY - touchY;
+    if (Math.abs(delta) > 55 && Math.abs(delta) > Math.abs(vertical)) show(requested + (delta < 0 ? 1 : -1));
   }, { passive: true });
 })();

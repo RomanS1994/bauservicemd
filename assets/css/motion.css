@@ -82,12 +82,22 @@
   .drawer-nav a { transition: color .4s ease, padding-left .6s cubic-bezier(.16, 1, .3, 1); }
   .drawer-nav a:focus-visible { padding-left: 10px; }
 }
-/* A persistent desktop layer avoids the scale-to-none handoff at animation end.
-   Touch devices keep every photo static, including during menu animations. */
-@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .hero-media img { transform: translate3d(.4%, 0, 0) scale(1.025); animation: hero-drift 10s cubic-bezier(.2, .65, .3, 1) both; }
-  .project-card > a:focus-visible img { transform: scale(1.035); }
+/* Cover wipes only arm before the photograph's first visible paint.
+   Covers are separate layers; bitmap opacity, crop and transform stay unchanged. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-shutter, .hero-blueprint { position: absolute; z-index: 1; inset-block: 0; pointer-events: none; visibility: hidden; }
+  .hero-shutter { width: 51%; }
+  .hero-shutter-left { left: 0; background: var(--color-copper); }
+  .hero-shutter-right { right: 0; background: #242923; }
+  .hero-background.is-preparing .hero-shutter { visibility: visible; }
+  .hero-background.is-preparing.is-ready .hero-shutter-left { animation: shutter-left 1.35s cubic-bezier(.76, 0, .24, 1) both; }
+  .hero-background.is-preparing.is-ready .hero-shutter-right { animation: shutter-right 1.35s cubic-bezier(.76, 0, .24, 1) both; }
+  [data-photo-reveal].photo-reveal-armed::before { content: ""; position: absolute; z-index: 2; inset: 0; background: var(--photo-cover, var(--color-background)); pointer-events: none; transform: scaleX(1); transform-origin: right; }
+  [data-photo-reveal].photo-reveal-running::before { animation: photo-unveil 1.35s cubic-bezier(.76, 0, .24, 1) both; }
 }
+@keyframes photo-unveil { to { transform: scaleX(0); } }
 @keyframes letter-rise { from { opacity: 0; transform: translate3d(0, 115%, 0) rotate(7deg); } to { opacity: 1; transform: translate3d(0, 0, 0) rotate(0); } }
 @keyframes copy-rise { from { transform: translateY(18px); } to { transform: translateY(0); } }
-@keyframes hero-drift { from { transform: translate3d(-.4%, 0, 0) scale(1.025); } to { transform: translate3d(.4%, 0, 0) scale(1.025); } }
+@keyframes shutter-left { from { transform: translateX(0); } to { transform: translateX(-102%); } }
+@keyframes shutter-right { from { transform: translateX(0); } to { transform: translateX(102%); } }
+@media (prefers-reduced-motion: reduce) { .hero-shutter, .hero-blueprint, [data-photo-reveal]::before { display: none; } }
