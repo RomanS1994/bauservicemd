@@ -306,6 +306,23 @@ def page(lang, slug, c):
 def document(lang, slug):
     c={**COPY[lang], 'section_numbers': slug == 'index.html', 'faq': FAQ[lang]['items'], 'faq_more': FAQ[lang]['more'], 'faq_less': FAQ[lang]['less'], 'footer_impressum': {'uk': 'Юридична інформація', 'de': 'Impressum', 'en': 'Legal notice'}[lang], 'footer_privacy': {'uk': 'Політика конфіденційності', 'de': 'Datenschutzerklärung', 'en': 'Privacy policy'}[lang]}
     body,title,description=page(lang,slug,c)
+    def animated_heading(match):
+        tag, attrs, content = match.groups()
+        if 'class="' in attrs:
+            attrs = attrs.replace('class="', 'class="text-motion ', 1)
+        else:
+            attrs += ' class="text-motion"'
+        index = 0
+        parts = []
+        for part in re.split(r'(\s+|<[^>]+>)', content):
+            if not part or part.isspace() or part.startswith('<'):
+                parts.append(part)
+            else:
+                parts.append(f'<span class="text-word" style="--word-delay:{min(index * 75, 600)}ms">{part}</span>')
+                index += 1
+        return f'<{tag}{attrs}>' + ''.join(parts) + f'</{tag}>'
+    if slug not in ('privacy.html', 'impressum.html'):
+        body = re.sub(r'<(h[23])([^>]*)>(.*?)</\1>', animated_heading, body, flags=re.S)
     alternates=''.join(f'<link rel="alternate" hreflang="{l}" href="{BASE}/{l}/{slug}">' for l in COPY)
     markup = f'''<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>{text(title_plain(title))} | BauServiceMD</title><meta name="description" content="{text(description)}"><link rel="canonical" href="{BASE}/{lang}/{slug}">{alternates}<link rel="alternate" hreflang="x-default" href="{BASE}/uk/{slug}"><meta property="og:type" content="website"><meta property="og:site_name" content="BauServiceMD"><meta property="og:title" content="{text(title_plain(title))} | BauServiceMD"><meta property="og:description" content="{text(description)}"><meta property="og:url" content="{BASE}/{lang}/{slug}"><meta property="og:image" content="{BASE}/assets/images/gallery-living.webp"><link rel="icon" href="../assets/images/favicon.png" type="image/png"><link rel="stylesheet" href="../assets/css/base.css"><link rel="stylesheet" href="../assets/css/layout.css"><link rel="stylesheet" href="../assets/css/components.css"><link rel="stylesheet" href="../assets/css/pages.css"><link rel="stylesheet" href="../assets/css/motion.css"><link rel="stylesheet" href="../assets/css/editorial.css"><script src="../assets/js/main.js" defer></script><script src="../assets/js/contact.js" defer></script><script src="../assets/js/motion.js" defer></script></head><body>{header(lang,slug,c)}<main id="main">{body}</main>{gallery_dialog(c) if slug in ("index.html", "projects.html") else ""}{footer(c)}</body></html>

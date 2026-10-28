@@ -10,6 +10,26 @@
   const photoJobs = new Map();
   let photoObserver;
   let heroAttempted = false;
+  let textObserver;
+  const textSeen = new WeakSet();
+  const startText = () => {
+    if (!('IntersectionObserver' in window)) return;
+    textObserver = new IntersectionObserver(entries => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (!isIntersecting) return;
+        textObserver.unobserve(target);
+        target.classList.add('text-revealed');
+      });
+    }, { threshold: 0, rootMargin: '0px 0px 100px 0px' });
+    document.querySelectorAll('.text-motion').forEach(heading => {
+      if (textSeen.has(heading)) return;
+      textSeen.add(heading);
+      // Only prepare headings still below the screen. Visible text stays untouched.
+      if (heading.getBoundingClientRect().top <= window.innerHeight + 120) return;
+      heading.classList.add('text-armed');
+      textObserver.observe(heading);
+    });
+  };
   const settlePhoto = (wrapper) => {
     const timer = photoJobs.get(wrapper);
     if (timer) clearTimeout(timer);
@@ -86,6 +106,7 @@
     if (preference.matches) return;
     revealHeroWhenReady();
     startPhotos();
+    startText();
     if ('IntersectionObserver' in window) {
       observer = new IntersectionObserver((entries) => {
         entries.forEach(({ target, isIntersecting }) => {
@@ -128,6 +149,8 @@
   preference.addEventListener('change', () => {
     observer?.disconnect();
     photoObserver?.disconnect();
+    textObserver?.disconnect();
+    document.querySelectorAll('.text-armed').forEach(heading => heading.classList.remove('text-armed', 'text-revealed'));
     Array.from(photoJobs.keys()).forEach(settlePhoto);
     document.querySelectorAll('[data-photo-reveal].photo-reveal-armed').forEach(settlePhoto);
     if (frame) cancelAnimationFrame(frame);
