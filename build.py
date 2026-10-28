@@ -101,9 +101,9 @@ COPY['en'].update({
 
 
 for lang, values in {
-    'uk': ('Галерея', 'Відкрити фото', 'Закрити', 'Попереднє фото', 'Наступне фото', 'Перегляньте фото інтер’єрів та деталей оздоблення. Натисніть на фото, щоб збільшити.'),
-    'de': ('Galerie', 'Foto öffnen', 'Schließen', 'Vorheriges Foto', 'Nächstes Foto', 'Entdecken Sie Innenräume und Details der Ausführung. Klicken Sie auf ein Foto, um es zu vergrößern.'),
-    'en': ('Gallery', 'Open photo', 'Close', 'Previous photo', 'Next photo', 'Explore interiors and finishing details. Select a photo to enlarge it.'),
+    'uk': ('Галерея', 'Детальніше', 'Закрити', 'Попереднє фото', 'Наступне фото', 'Перегляньте фото інтер’єрів та деталей оздоблення. Натисніть на фото, щоб перейти до деталей.'),
+    'de': ('Galerie', 'Details ansehen', 'Schließen', 'Vorheriges Foto', 'Nächstes Foto', 'Entdecken Sie Innenräume und Details der Ausführung. Klicken Sie auf ein Foto, um mehr zu erfahren.'),
+    'en': ('Gallery', 'View details', 'Close', 'Previous photo', 'Next photo', 'Explore interiors and finishing details. Select a photo to view the details.'),
 }.items():
     for key, value in zip(('projects_page_title', 'example_link', 'gallery_close', 'gallery_prev', 'gallery_next', 'work_intro'), values):
         COPY[lang][key] = value
@@ -235,7 +235,7 @@ def projects_grid(c, expanded=False):
     cards = [('room', c['example_title'], ''), ('detail', c['example_detail'], ''), ('gallery-living', c['example_wide'], 'project-card-wide')]
     if not expanded:
         cards = cards[:2]
-    return '<div class="project-grid">'+''.join(f'''<article class="project-card {cls}"><a class="photo-frame gallery-frame" data-photo-reveal href="../assets/images/{filename}.webp" data-gallery-image data-caption="{text(title)}" aria-label="{text(c['example_link'])}: {text(title)}">{image(filename,title)}<span class="photo-open" aria-hidden="true">{arrow()}</span></a><div class="project-copy"><h3>{text(title)}</h3><a class="text-link" href="../assets/images/{filename}.webp" data-gallery-image data-caption="{text(title)}">{text(c['example_link'])}{arrow()}</a></div></article>''' for filename,title,cls in cards)+'</div>'
+    return '<div class="project-grid">'+''.join(f'''<article class="project-card {cls}"><a class="photo-frame gallery-frame" data-photo-reveal href="project-example.html" aria-label="{text(c['example_link'])}: {text(title)}">{image(filename,title)}<span class="photo-open" aria-hidden="true">{arrow()}</span></a><div class="project-copy"><h3>{text(title)}</h3><a class="text-link" href="project-example.html">{text(c['example_link'])}{arrow()}</a></div></article>''' for filename,title,cls in cards)+'</div>'
 
 def gallery_dialog(c):
     return f'''<dialog class="gallery-dialog" aria-label="{text(c['projects_page_title'])}" data-gallery-dialog><div class="gallery-toolbar"><p data-gallery-counter aria-live="polite"></p><button type="button" class="gallery-control" data-gallery-close>{text(c['gallery_close'])}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div><figure><img data-gallery-photo alt=""><figcaption data-gallery-caption></figcaption></figure><div class="gallery-navigation"><button type="button" class="gallery-control" data-gallery-prev aria-label="{text(c['gallery_prev'])}">{arrow('gallery-arrow-prev')}</button><button type="button" class="gallery-control" data-gallery-next aria-label="{text(c['gallery_next'])}">{arrow('gallery-arrow-next')}</button></div></dialog>'''
