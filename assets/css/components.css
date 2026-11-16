@@ -120,3 +120,7 @@
 /* Local brand assets retain their original colors on hover and focus. */
 .icon-contact-brand { width: 30px; height: 30px; flex-basis: 30px; object-fit: contain; }
 .contact-options .button { min-height: 54px; }
+
+.project-photo-link { position: relative; display: block; cursor: zoom-in; border-radius: var(--radius); }
+.project-photo-link:focus-visible { outline: 3px solid var(--color-accent, #b6512d); outline-offset: 5px; }
+.project-photo-link .photo-open { opacity: 1; transform: none; }
