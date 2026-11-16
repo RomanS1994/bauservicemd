@@ -76,3 +76,11 @@
 .gallery-frame.photo-reveal-armed::before { -webkit-mask: url('../images/photo-mask.svg') center / 100% 100% no-repeat; mask: url('../images/photo-mask.svg') center / 100% 100% no-repeat; }
 .about-editorial .button-secondary { background: transparent; }
 .about-editorial .button-secondary:hover, .about-editorial .button-secondary:focus-visible { background: #d9b18a; color: #242923; }
+
+/* Preserve the supplied portrait proportions, including on narrow screens. */
+.about-portrait { width: 100%; max-width: 420px; margin-inline: auto; aspect-ratio: 2 / 3; }
+.about-portrait img, .page-grid .about-portrait img { display: block; width: 100%; height: 100%; aspect-ratio: 2 / 3; object-fit: cover; object-position: center; }
+.about-page-portrait { border-radius: var(--radius); overflow: hidden; }
+@media (max-width: 767px) {
+  .about-portrait { max-width: 360px; }
+}

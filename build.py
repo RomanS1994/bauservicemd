@@ -250,8 +250,11 @@ def gallery_dialog(c):
 def projects_section(c):
     return f'''<section class="section projects-section" aria-labelledby="projects-heading"><div class="container"><div class="section-top"><div>{label('02',c['work_label'],c.get('section_numbers', True))}<h2 id="projects-heading">{text(c['work_title'])}</h2></div>{link('projects.html',c['all_work'])}</div><p class="section-intro">{text(c['work_intro'])}</p>{projects_grid(c,True)}</div></section>'''
 
+def portrait(eager=False):
+    return f'<img src="../assets/images/dmytro-mykhavkiv.jpeg" alt="Dmytro Mykhavkiv — BauServiceMD" width="1000" height="1500" loading="{"eager" if eager else "lazy"}" decoding="async">'
+
 def about_section(c):
-    return f'''<section class="about-editorial section" aria-labelledby="about-heading"><div class="container about-editorial-grid"><div class="about-collage"><figure class="photo-frame collage-main" data-photo-reveal>{image('work',c['illustration'])}</figure><figure class="photo-frame collage-room" data-photo-reveal>{image('room',c['illustration'])}</figure><figure class="photo-frame collage-detail" data-photo-reveal>{image('detail',c['illustration'])}</figure><div class="craft-seal" aria-hidden="true"><span>BauServiceMD</span><svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.3"><path d="m5 17 13-11 13 11M9 14v16h18V14M15 30V20h6v10"/></svg><span>Frankfurt am Main</span></div></div><div class="about-editorial-copy">{label('03',c['about_label'],c.get('section_numbers', True))}<h2 id="about-heading">{c['about_title']}</h2><p>{text(c['about_short'])}</p>{link('about.html',c['about_more'],'button button-secondary')}</div></div></section>'''
+    return f'''<section class="about-editorial section" aria-labelledby="about-heading"><div class="container about-editorial-grid"><figure class="photo-frame about-portrait" data-photo-reveal>{portrait()}</figure><div class="about-editorial-copy">{label('03',c['about_label'],c.get('section_numbers', True))}<h2 id="about-heading">{c['about_title']}</h2><p>{text(c['about_short'])}</p>{link('about.html',c['about_more'],'button button-secondary')}</div></div></section>'''
 
 def process_section(c):
     steps = ''.join(f'<li class="step"><span class="step-number">0{i+1}</span><h3>{text(t)}</h3><p>{text(b)}</p></li>' for i,(t,b) in enumerate(c['steps']))
@@ -303,7 +306,7 @@ def page(lang, slug, c):
     if slug=='project-example.html':
         return page_hero(c,c['example_heading'],c['example_intro'])+f'''<section class="section"><div class="container"><figure class="example-hero">{image('room',c['illustration'],eager=True)}</figure><div class="prose example-prose"><p>{text(c['example_body'])}</p>{link('projects.html',c['back_work'])}</div></div></section>'''+contact_section(c),c['example_heading'],c['example_intro']
     if slug=='about.html':
-        return page_hero(c,c['about_page_title'])+f'''<section class="section"><div class="container page-grid"><div class="prose"><h2>Dmytro Mykhavkiv</h2><p>{text(c['about_short'])}</p>{''.join(f'<p>{text(p)}</p>' for p in c['about_paragraphs'])}</div><figure>{image('work',c['illustration'],eager=True)}</figure></div></section>'''+process_section(c)+contact_section(c),c['about_label'],c['about_short']
+        return page_hero(c,c['about_page_title'])+f'''<section class="section"><div class="container page-grid"><div class="prose"><h2>Dmytro Mykhavkiv</h2><p>{text(c['about_short'])}</p>{''.join(f'<p>{text(p)}</p>' for p in c['about_paragraphs'])}</div><figure class="about-portrait about-page-portrait">{portrait(eager=True)}</figure></div></section>'''+process_section(c)+contact_section(c),c['about_label'],c['about_short']
     if slug=='contact.html':
         return page_hero(c,c['contact_page_title'],c['contact_intro'])+contact_section(c,True)+faq_section(c),c['contact_label'],c['contact_intro']
     if slug=='impressum.html':
