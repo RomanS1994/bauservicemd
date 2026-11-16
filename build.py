@@ -260,12 +260,19 @@ WALL_VISUAL = {
  'en': {'title': 'Preparing walls for finishing', 'label': 'AI visualization', 'note': 'Illustration based on a renovation-in-progress photo. The room dimensions have been altered using AI.'},
 }
 
+for lang, description in {
+ 'uk': 'Професійне зняття старих шпалер та підготовка стін до подальшого ремонту.',
+ 'de': 'Fachgerechtes Entfernen alter Tapeten und Vorbereitung der Wände für die anschließende Renovierung.',
+ 'en': 'Professional removal of old wallpaper and wall preparation for further renovation.',
+}.items():
+    WALL_VISUAL[lang]['description'] = description
+
 def wall_visual_image(c, eager=False):
     return image('wall-preparation-visual',c['wall_visual']['title']+' — '+c['wall_visual']['label'],eager=eager).replace('width="1400" height="1000"', 'width="1536" height="1024"')
 
 def wall_visual_card(c):
     project = c['wall_visual']
-    return f'''<article class="project-card"><a class="photo-frame gallery-frame" data-photo-reveal href="project-wall-preparation.html" aria-label="{text(c['example_link'])}: {text(project['title'])}">{wall_visual_image(c)}<span class="photo-open" aria-hidden="true">{arrow()}</span></a><div class="project-copy"><h3>{text(project['title'])}</h3><a class="text-link" href="project-wall-preparation.html">{text(c['example_link'])}{arrow()}</a></div></article>'''
+    return f'''<article class="project-card"><a class="photo-frame gallery-frame" data-photo-reveal href="project-wall-preparation.html" aria-label="{text(c['example_link'])}: {text(project['title'])}">{wall_visual_image(c)}<span class="photo-open" aria-hidden="true">{arrow()}</span></a><div class="project-copy"><h3>{text(project['title'])}</h3><a class="text-link" href="project-wall-preparation.html">{text(c['example_link'])}{arrow()}</a></div><p class="project-description">{text(project['description'])}</p></article>'''
 
 def projects_grid(c, expanded=False):
     cards = [('detail', c['example_detail'], ''), ('gallery-living', c['example_wide'], 'project-card-wide')]
@@ -340,7 +347,7 @@ def page(lang, slug, c):
         project = c['wall_visual']
         attic_alt = {'uk': 'Зняття шпалер у кімнаті з мансардним вікном', 'de': 'Entfernung alter Tapeten in einem Raum mit Dachfenster', 'en': 'Removing wallpaper in a room with a roof window'}[lang]
         attic_photo = f'<figure class="wall-visual-full" style="margin-top:32px"><img src="../assets/images/attic-wall-preparation.webp" alt="{text(attic_alt)}" width="1254" height="1254" loading="lazy" decoding="async"></figure>'
-        return page_hero(c,project['title'])+f'<section class="section"><div class="container"><figure class="wall-visual-full">{wall_visual_image(c,eager=True)}</figure>{attic_photo}<p class="project-back">{link("projects.html",c["back_work"])}</p></div></section>'+contact_section(c),project['title'],project['title']
+        return page_hero(c,project['title'],project['description'])+f'<section class="section"><div class="container"><figure class="wall-visual-full">{wall_visual_image(c,eager=True)}</figure>{attic_photo}<p class="project-back">{link("projects.html",c["back_work"])}</p></div></section>'+contact_section(c),project['title'],project['description']
     if slug=='project-example.html':
         return page_hero(c,c['example_heading'],c['example_intro'])+f'''<section class="section"><div class="container"><figure class="example-hero">{image('room',c['illustration'],eager=True)}</figure><div class="prose example-prose"><p>{text(c['example_body'])}</p>{link('projects.html',c['back_work'])}</div></div></section>'''+contact_section(c),c['example_heading'],c['example_intro']
     if slug=='about.html':
