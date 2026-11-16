@@ -338,7 +338,9 @@ def page(lang, slug, c):
         return page_hero(c,project['title'],project['description'])+f'<section class="section"><div class="container"><div class="project-photo-gallery">{photos}</div><p class="project-back">{link("projects.html",c["back_work"])}</p></div></section>'+contact_section(c),project['title'],project['description']
     if slug=='project-wall-preparation.html':
         project = c['wall_visual']
-        return page_hero(c,project['title'])+f'<section class="section"><div class="container"><figure class="wall-visual-full">{wall_visual_image(c,eager=True)}</figure><p class="project-back">{link("projects.html",c["back_work"])}</p></div></section>'+contact_section(c),project['title'],project['title']
+        attic_alt = {'uk': 'Зняття шпалер у кімнаті з мансардним вікном', 'de': 'Entfernung alter Tapeten in einem Raum mit Dachfenster', 'en': 'Removing wallpaper in a room with a roof window'}[lang]
+        attic_photo = f'<figure class="wall-visual-full" style="margin-top:32px"><img src="../assets/images/attic-wall-preparation.webp" alt="{text(attic_alt)}" width="1254" height="1254" loading="lazy" decoding="async"></figure>'
+        return page_hero(c,project['title'])+f'<section class="section"><div class="container"><figure class="wall-visual-full">{wall_visual_image(c,eager=True)}</figure>{attic_photo}<p class="project-back">{link("projects.html",c["back_work"])}</p></div></section>'+contact_section(c),project['title'],project['title']
     if slug=='project-example.html':
         return page_hero(c,c['example_heading'],c['example_intro'])+f'''<section class="section"><div class="container"><figure class="example-hero">{image('room',c['illustration'],eager=True)}</figure><div class="prose example-prose"><p>{text(c['example_body'])}</p>{link('projects.html',c['back_work'])}</div></div></section>'''+contact_section(c),c['example_heading'],c['example_intro']
     if slug=='about.html':
