@@ -148,6 +148,7 @@ for localized in COPY.values():
 
 SLUGS = ['index.html', 'services.html', 'service-renovation.html', 'service-flooring.html', 'service-assembly.html', 'service-repairs.html', 'projects.html', 'project-example.html', 'about.html', 'contact.html', 'impressum.html', 'privacy.html']
 SERVICE_SLUGS = SLUGS[2:6]
+SLUGS.append('project-balcony.html')
 
 def text(s):
     return esc(s, quote=True)
@@ -199,7 +200,7 @@ def title_plain(title):
 
 def header(lang, slug, c):
     home_nav = f'<a href="index.html"{" aria-current=\"page\"" if slug == "index.html" else ""}>{text(c["home"])}</a>'
-    nav = ''.join(f'<a href="{s}"{ " aria-current=\"page\"" if slug == s or (s == "services.html" and slug in SERVICE_SLUGS) or (s == "projects.html" and slug == "project-example.html") else ""}>{text(t)}</a>' for s,t in zip(['services.html','projects.html','about.html','contact.html'], c['nav']))
+    nav = ''.join(f'<a href="{s}"{ " aria-current=\"page\"" if slug == s or (s == "services.html" and slug in SERVICE_SLUGS) or (s == "projects.html" and slug in ("project-example.html", "project-balcony.html")) else ""}>{text(t)}</a>' for s,t in zip(['services.html','projects.html','about.html','contact.html'], c['nav']))
     nav = home_nav + nav
     languages = ''.join(f'<a href="../{l}/{slug}" lang="{l}" hreflang="{l}" aria-label="{COPY[l]["lang_name"]}"{ " aria-current=\"true\"" if l == lang else ""}>{"UA" if l == "uk" else l.upper()}</a>' for l in COPY)
     language_label = {'uk': 'Мова сайту', 'de': 'Sprache', 'en': 'Language'}[lang]
@@ -240,11 +241,24 @@ def service_list(c):
 def service_section(c):
     return f'''<section class="section services-section" aria-labelledby="services-heading"><div class="container services-layout"><div class="services-intro">{label('01',c['services_label'],c.get('section_numbers', True))}<h2 id="services-heading">{c['services_title']}</h2><p>{text(c['services_intro'])}</p><figure>{image('detail',c['illustration'])}</figure></div><div>{service_list(c)}<p class="section-note">{text(c['services_note'])}</p>{link('services.html',c['all_services'])}</div></div></section>'''
 
+BALCONY = {
+ 'uk': {'title': 'Оновлення покриття балкона', 'description': 'Надійне та ретельне виконання дрібних ремонтних робіт і робіт з утримання приміщень у належному стані — у будинках, квартирах та комерційних приміщеннях.', 'captions': ['Покриття балкона — загальний вигляд', 'Деталі покриття біля стіни та дверей', 'Укладання покриття на балконі']},
+ 'de': {'title': 'Neuer Bodenbelag auf dem Balkon', 'description': 'Zuverlässige und sorgfältige Ausführung von Kleinreparaturen und Arbeiten zur Instandhaltung — in Häusern, Wohnungen und Gewerberäumen.', 'captions': ['Balkonbelag — Gesamtansicht', 'Details des Belags an Wand und Tür', 'Verlegung des Balkonbelags']},
+ 'en': {'title': 'Refreshing a balcony floor covering', 'description': 'Reliable and careful small repairs and property maintenance — in houses, apartments and commercial premises.', 'captions': ['Balcony floor covering — overall view', 'Floor covering details along the wall and doorway', 'Installing the balcony floor covering']},
+}
+
+def balcony_photo(filename, alt, eager=False):
+    return f'<img src="../assets/images/{filename}.jpeg" alt="{text(alt)}" width="900" height="2000" loading="{"eager" if eager else "lazy"}" decoding="async">'
+
+def balcony_card(c):
+    project = c['balcony']
+    return f'''<article class="project-card project-card-real"><a class="photo-frame gallery-frame" data-photo-reveal href="project-balcony.html" aria-label="{text(c['example_link'])}: {text(project['title'])}">{balcony_photo('balcony-finished',project['captions'][0])}<span class="photo-open" aria-hidden="true">{arrow()}</span></a><div class="project-copy"><h3>{text(project['title'])}</h3><a class="text-link" href="project-balcony.html">{text(c['example_link'])}{arrow()}</a></div><p class="project-description">{text(project['description'])}</p></article>'''
+
 def projects_grid(c, expanded=False):
     cards = [('room', c['example_title'], ''), ('detail', c['example_detail'], ''), ('gallery-living', c['example_wide'], 'project-card-wide')]
     if not expanded:
         cards = cards[:2]
-    return '<div class="project-grid">'+''.join(f'''<article class="project-card {cls}"><a class="photo-frame gallery-frame" data-photo-reveal href="project-example.html" aria-label="{text(c['example_link'])}: {text(title)}">{image(filename,title)}<span class="photo-open" aria-hidden="true">{arrow()}</span></a><div class="project-copy"><h3>{text(title)}</h3><a class="text-link" href="project-example.html">{text(c['example_link'])}{arrow()}</a></div></article>''' for filename,title,cls in cards)+'</div>'
+    return '<div class="project-grid">'+balcony_card(c)+''.join(f'''<article class="project-card {cls}"><a class="photo-frame gallery-frame" data-photo-reveal href="project-example.html" aria-label="{text(c['example_link'])}: {text(title)}">{image(filename,title)}<span class="photo-open" aria-hidden="true">{arrow()}</span></a><div class="project-copy"><h3>{text(title)}</h3><a class="text-link" href="project-example.html">{text(c['example_link'])}{arrow()}</a></div></article>''' for filename,title,cls in cards)+'</div>'
 
 def gallery_dialog(c):
     return f'''<dialog class="gallery-dialog" aria-label="{text(c['projects_page_title'])}" data-gallery-dialog><div class="gallery-toolbar"><p data-gallery-counter aria-live="polite"></p><button type="button" class="gallery-control" data-gallery-close>{text(c['gallery_close'])}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div><figure><img data-gallery-photo alt=""><figcaption data-gallery-caption></figcaption></figure><div class="gallery-navigation"><button type="button" class="gallery-control" data-gallery-prev aria-label="{text(c['gallery_prev'])}">{arrow('gallery-arrow-prev')}</button><button type="button" class="gallery-control" data-gallery-next aria-label="{text(c['gallery_next'])}">{arrow('gallery-arrow-next')}</button></div></dialog>'''
@@ -305,6 +319,10 @@ def page(lang, slug, c):
         return body,item[0],item[1]
     if slug=='projects.html':
         return page_hero(c,c['projects_page_title'],c['work_intro'])+f'<section class="section"><div class="container">{projects_grid(c,True)}</div></section>'+contact_section(c),c['work_label'],c['work_intro']
+    if slug=='project-balcony.html':
+        project = c['balcony']
+        photos = ''.join(f'<figure>{balcony_photo(filename,caption,eager=i==0)}<figcaption>{text(caption)}</figcaption></figure>' for i,(filename,caption) in enumerate(zip(('balcony-finished','balcony-detail','balcony-installation'),project['captions'])))
+        return page_hero(c,project['title'],project['description'])+f'<section class="section"><div class="container"><div class="project-photo-gallery">{photos}</div><p class="project-back">{link("projects.html",c["back_work"])}</p></div></section>'+contact_section(c),project['title'],project['description']
     if slug=='project-example.html':
         return page_hero(c,c['example_heading'],c['example_intro'])+f'''<section class="section"><div class="container"><figure class="example-hero">{image('room',c['illustration'],eager=True)}</figure><div class="prose example-prose"><p>{text(c['example_body'])}</p>{link('projects.html',c['back_work'])}</div></div></section>'''+contact_section(c),c['example_heading'],c['example_intro']
     if slug=='about.html':
@@ -316,7 +334,7 @@ def page(lang, slug, c):
     return page_hero(c,TITLES[lang],c['privacy_intro'])+f'''<section class="section"><div class="container prose legal-prose">{POLICY[lang]}</div></section>''',TITLES[lang],c['privacy_intro']
 
 def document(lang, slug):
-    c={**COPY[lang], 'section_numbers': slug == 'index.html', 'faq': FAQ[lang]['items'], 'faq_more': FAQ[lang]['more'], 'faq_less': FAQ[lang]['less'], 'footer_impressum': {'uk': 'Юридична інформація', 'de': 'Impressum', 'en': 'Legal notice'}[lang], 'footer_privacy': {'uk': 'Політика конфіденційності', 'de': 'Datenschutzerklärung', 'en': 'Privacy policy'}[lang]}
+    c={**COPY[lang], 'balcony': BALCONY[lang], 'section_numbers': slug == 'index.html', 'faq': FAQ[lang]['items'], 'faq_more': FAQ[lang]['more'], 'faq_less': FAQ[lang]['less'], 'footer_impressum': {'uk': 'Юридична інформація', 'de': 'Impressum', 'en': 'Legal notice'}[lang], 'footer_privacy': {'uk': 'Політика конфіденційності', 'de': 'Datenschutzerklärung', 'en': 'Privacy policy'}[lang]}
     body,title,description=page(lang,slug,c)
     def animated_heading(match):
         tag, attrs, content = match.groups()

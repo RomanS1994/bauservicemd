@@ -84,3 +84,12 @@
 @media (max-width: 767px) {
   .about-portrait { max-width: 360px; }
 }
+
+.project-description { margin-top: 16px; max-width: 60ch; color: var(--color-muted); font-size: 15px; line-height: 1.75; }
+.project-photo-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
+.project-photo-gallery img { display: block; width: 100%; height: auto; border-radius: var(--radius); }
+.project-photo-gallery figcaption { margin-top: 14px; color: var(--color-muted); font-size: 14px; line-height: 1.6; }
+.project-back { margin-top: 36px; }
+@media (max-width: 767px) {
+  .project-photo-gallery { grid-template-columns: 1fr; gap: 32px; }
+}
