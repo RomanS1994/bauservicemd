@@ -156,6 +156,8 @@ def arrow(cls=''):
     return f'<svg class="icon-arrow {cls}" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg>'
 
 def contact_icon(kind):
+    if kind in ('instagram', 'facebook', 'whatsapp'):
+        return f'<img class="icon-contact icon-contact-brand" src="../assets/icons/{kind}.svg" alt="" width="32" height="32" aria-hidden="true">'
     paths = {
         'facebook': '<path d="M18 3h-3a5 5 0 0 0-5 5v3H7v4h3v6h4v-6h3l1-4h-4V8a1 1 0 0 1 1-1h3Z"/>',
         'instagram': '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>',

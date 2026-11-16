@@ -116,3 +116,7 @@
 .faq-more > .faq-list { margin-top: 18px; }
 
 .icon-contact { display: inline-block; width: 22px; height: 22px; flex: 0 0 22px; vertical-align: middle; pointer-events: none; }
+
+/* Local brand assets retain their original colors on hover and focus. */
+.icon-contact-brand { width: 30px; height: 30px; flex-basis: 30px; object-fit: contain; }
+.contact-options .button { min-height: 54px; }
