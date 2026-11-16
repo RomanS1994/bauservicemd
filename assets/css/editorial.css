@@ -95,3 +95,6 @@
 }
 
 .project-card-real .gallery-frame img { object-position: center top; }
+
+.visual-disclosure { margin-bottom: 24px; padding: 16px 20px; border-left: 3px solid var(--color-copper); background: #f0e9df; color: var(--color-ink); font-size: 15px; line-height: 1.7; }
+.wall-visual-full img { display: block; width: 100%; height: auto; border-radius: var(--radius); }
