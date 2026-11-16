@@ -93,3 +93,5 @@
 @media (max-width: 767px) {
   .project-photo-gallery { grid-template-columns: 1fr; gap: 32px; }
 }
+
+.project-card-real .gallery-frame img { object-position: center top; }
