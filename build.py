@@ -12,6 +12,8 @@ BASE = 'https://romans1994.github.io/bauservicemd'
 PHONE = '+49 1577 8582592'
 EMAIL = 'renovierungsservicedima@gmail.com'
 WA = 'https://wa.me/4915778582592'
+INSTAGRAM = 'https://www.instagram.com/dmytrobauservice/'
+FACEBOOK = 'https://www.facebook.com/share/1FQBRWX7cg/'
 
 COPY = {
  'uk': {
@@ -155,6 +157,8 @@ def arrow(cls=''):
 
 def contact_icon(kind):
     paths = {
+        'facebook': '<path d="M18 3h-3a5 5 0 0 0-5 5v3H7v4h3v6h4v-6h3l1-4h-4V8a1 1 0 0 1 1-1h3Z"/>',
+        'instagram': '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>',
         'whatsapp': '<path d="M20.5 3.5a11.9 11.9 0 0 0-18.7 14.3L.2 24l6.4-1.7A11.9 11.9 0 0 0 24 11.9a11.8 11.8 0 0 0-3.5-8.4ZM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.3-.4A9.9 9.9 0 1 1 12 21.8Zm5.4-7.4c-.3-.1-1.8-.9-2.1-1-.3-.1-.5-.1-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1a8.1 8.1 0 0 1-2.5-1.5 9.4 9.4 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.3c-.2-.6-.5-.5-.7-.5H7.3c-.2 0-.5.1-.8.4A3.3 3.3 0 0 0 5.5 9c0 1.5 1.1 2.9 1.3 3.1.1.2 2.2 3.4 5.3 4.8.7.3 1.3.5 1.8.6.7.2 1.4.2 2 .1.6-.1 1.8-.7 2.1-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.4Z"/>',
         'phone': '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.09 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.84.56 2.8.69A2 2 0 0 1 22 16.92Z"/>',
         'email': '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
@@ -163,7 +167,8 @@ def contact_icon(kind):
     return f'<svg class="icon-contact" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" {paint} aria-hidden="true" focusable="false">{paths[kind]}</svg>'
 
 def contact_link(href, label, kind, cls='button button-secondary'):
-    return f'<a class="{cls}" href="{href}">{contact_icon(kind)}<span>{text(label)}</span></a>'
+    external = ' target="_blank" rel="noopener noreferrer"' if kind in ('instagram', 'facebook') else ''
+    return f'<a class="{cls}" href="{href}"{external}>{contact_icon(kind)}<span>{text(label)}</span></a>'
 
 def link(href, label, cls='text-link'):
     return f'<a class="{cls}" href="{href}">{text(label)} {arrow()}</a>'
@@ -208,7 +213,7 @@ def footer(c):
     return f'''<footer class="site-footer"><div class="container footer-grid">
 <div><a class="brand footer-brand" href="index.html"><img src="../assets/images/logo-transparent.webp" alt="BauServiceMD" width="260" height="172" loading="lazy"></a><p>{text(c['footer_line'])}</p></div>
 <nav class="footer-links" aria-label="{c['menu']}">{nav}</nav>
-<div class="footer-contact"><a href="tel:+4915778582592">{PHONE}</a><a href="mailto:{EMAIL}">{EMAIL}</a><p>{text(c['region'])}</p></div>
+<div class="footer-contact"><a href="tel:+4915778582592">{PHONE}</a><a href="mailto:{EMAIL}">{EMAIL}</a>{contact_link(INSTAGRAM,'Instagram','instagram','text-link')}{contact_link(FACEBOOK,'Facebook','facebook','text-link')}<p>{text(c['region'])}</p></div>
 <div class="footer-legal"><a href="impressum.html">{text(c['footer_impressum'])}</a><a href="privacy.html">{text(c['footer_privacy'])}</a></div>
 </div></footer>'''
 
@@ -223,7 +228,7 @@ def form(c):
 
 def contact_section(c, full=False):
     details = f'''<dl class="contact-details"><div><dt>{text(c['phone_label'])}</dt><dd><a href="tel:+4915778582592">{PHONE}</a></dd></div><div><dt>{text(c['email_label'])}</dt><dd><a href="mailto:{EMAIL}">{EMAIL}</a></dd></div><div><dt>{text(c['region'])}</dt><dd>Frankfurt am Main, Deutschland</dd></div></dl>''' if full else ''
-    return f'''<section class="section contact-section" id="contact" aria-labelledby="contact-heading"><div class="container contact-grid"><div class="contact-copy">{label('07',c['contact_label'],c.get('section_numbers', True))}<h2 id="contact-heading">{c['contact_title']}</h2><p>{text(c['contact_intro'])}</p><div class="contact-options">{contact_link(WA,'WhatsApp','whatsapp')}{contact_link('tel:+4915778582592',c['call'],'phone')}</div><p>{contact_link('mailto:'+EMAIL,c['write'],'email','text-link')}</p>{details}</div><div><h3 class="form-heading">{text(c['form_title'])}</h3>{form(c)}</div></div></section>'''
+    return f'''<section class="section contact-section" id="contact" aria-labelledby="contact-heading"><div class="container contact-grid"><div class="contact-copy">{label('07',c['contact_label'],c.get('section_numbers', True))}<h2 id="contact-heading">{c['contact_title']}</h2><p>{text(c['contact_intro'])}</p><div class="contact-options">{contact_link(WA,'WhatsApp','whatsapp')}{contact_link('tel:+4915778582592',c['call'],'phone')}{contact_link(INSTAGRAM,'Instagram','instagram')}{contact_link(FACEBOOK,'Facebook','facebook')}</div><p>{contact_link('mailto:'+EMAIL,c['write'],'email','text-link')}</p>{details}</div><div><h3 class="form-heading">{text(c['form_title'])}</h3>{form(c)}</div></div></section>'''
 
 def service_list(c):
     return '<div class="service-list">' + ''.join(f'''<a class="service-row" href="{slug}"><span class="service-number">0{i+1}</span><div class="service-content"><h3>{text(item[0])}</h3><p>{text(item[1])}</p></div>{arrow('service-arrow')}</a>''' for i,(slug,item) in enumerate(zip(SERVICE_SLUGS,c['services']))) + '</div>'
