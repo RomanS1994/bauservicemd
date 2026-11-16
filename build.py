@@ -198,7 +198,9 @@ def title_plain(title):
     return title.replace('<br>', ' ')
 
 def header(lang, slug, c):
+    home_nav = f'<a href="index.html"{" aria-current=\"page\"" if slug == "index.html" else ""}>{text(c["home"])}</a>'
     nav = ''.join(f'<a href="{s}"{ " aria-current=\"page\"" if slug == s or (s == "services.html" and slug in SERVICE_SLUGS) or (s == "projects.html" and slug == "project-example.html") else ""}>{text(t)}</a>' for s,t in zip(['services.html','projects.html','about.html','contact.html'], c['nav']))
+    nav = home_nav + nav
     languages = ''.join(f'<a href="../{l}/{slug}" lang="{l}" hreflang="{l}" aria-label="{COPY[l]["lang_name"]}"{ " aria-current=\"true\"" if l == lang else ""}>{"UA" if l == "uk" else l.upper()}</a>' for l in COPY)
     language_label = {'uk': 'Мова сайту', 'de': 'Sprache', 'en': 'Language'}[lang]
     close_label = {'uk': 'Закрити меню', 'de': 'Menü schließen', 'en': 'Close menu'}[lang]
